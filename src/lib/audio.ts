@@ -28,7 +28,7 @@ type AudioPreferences = {
 
 const PREFS_KEY = "samiya-audio-prefs";
 
-const DEFAULT_PREFS: AudioPreferences = {
+export const DEFAULT_AUDIO_PREFS: AudioPreferences = {
   music: true,
   sfx: true,
   musicVolume: 0.55,
@@ -75,7 +75,7 @@ class AudioEngine {
   private musicStarted = false;
   private echoSend: DelayNode | null = null;
 
-  private prefs: AudioPreferences = DEFAULT_PREFS;
+  private prefs: AudioPreferences = DEFAULT_AUDIO_PREFS;
   private listeners = new Set<() => void>();
 
   constructor() {
@@ -89,11 +89,11 @@ class AudioEngine {
   private loadPrefs(): AudioPreferences {
     try {
       const raw = localStorage.getItem(PREFS_KEY);
-      if (raw) return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
+      if (raw) return { ...DEFAULT_AUDIO_PREFS, ...JSON.parse(raw) };
     } catch {
       /* ignore */
     }
-    return DEFAULT_PREFS;
+    return DEFAULT_AUDIO_PREFS;
   }
 
   private savePrefs() {

@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------------
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Atmosphere from "@/components/Atmosphere";
 import { AudioProvider, useAudio } from "@/components/AudioProvider";
 import JourneyNav from "@/components/JourneyNav";
@@ -74,7 +74,32 @@ function Experience() {
   );
 }
 
+// The experience is entirely client-side (audio, canvas, localStorage), so the
+// server renders this calm shell. It is byte-for-byte what the first client
+// render produces, which keeps hydration exact; the experience then mounts.
+function Opening() {
+  return (
+    <div className="midnight-bg flex min-h-screen w-full flex-col items-center justify-center">
+      <div className="relative flex h-20 w-20 items-center justify-center">
+        <span className="absolute inset-0 rounded-full bg-rose/25 blur-2xl" />
+        <span className="relative font-display text-3xl text-soft/80">💗</span>
+      </div>
+      <p className="mt-6 font-display text-lg tracking-wide text-soft/60">
+        For Samiya
+      </p>
+    </div>
+  );
+}
+
 export default function Page() {
+  // Mount on the client only: nothing below can disagree with the server HTML.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <Opening />;
+
   return (
     <AudioProvider>
       <Experience />

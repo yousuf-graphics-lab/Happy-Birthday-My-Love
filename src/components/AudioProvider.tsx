@@ -18,7 +18,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { audioEngine, type SfxName } from "@/lib/audio";
+import { audioEngine, DEFAULT_AUDIO_PREFS, type SfxName } from "@/lib/audio";
 
 type AudioState = {
   musicOn: boolean;
@@ -33,11 +33,14 @@ type AudioState = {
 const AudioContext = createContext<AudioState | null>(null);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
-  const [prefs, setPrefs] = useState(() => audioEngine.getPreferences());
+  // The first render must be identical on the server and the client, so start
+  // from the defaults and only then adopt whatever is stored on this device.
+  // Reading localStorage during render is what caused the hydration mismatch.
+  const [prefs, setPrefs] = useState(DEFAULT_AUDIO_PREFS);
   const [unlocked, setUnlocked] = useState(false);
 
-  // React to engine changes (toggles made elsewhere).
   useEffect(() => {
+    setPrefs(audioEngine.getPreferences());
     const unsub = audioEngine.subscribe(() => setPrefs(audioEngine.getPreferences()));
     return () => {
       unsub();
