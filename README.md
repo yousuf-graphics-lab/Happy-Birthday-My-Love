@@ -15,9 +15,9 @@ confetti are drawn on canvas, and any photos she adds never leave her device.
 | 1 | **The Welcome** | A floating envelope with a wax seal. Opening it breaks the seal, releases golden particles, starts the music and carries you inside. |
 | 2 | **The Reveal** | Her name shimmering in gradient, a three-layer cake with five candles. Blow into the microphone (or tap the flames) to make a wish. |
 | 3 | **The Letter** | A midnight stationery card where the handwritten letter writes itself a paragraph at a time, ending with a signature and a gold divider. |
-| 4 | **The Bouquet** | Seven roses, lilies and gold blooms rising from the ground with butterflies, petals and a poem — then a petal shower. |
+| 4 | **The Bouquet** | An empty wrapped bouquet with stems draws itself, then seven roses, peonies, lilies and gold blooms spring into it, followed by a poem and a petal shower. |
 | 5 | **Our Memories** | A glass-framed gallery for up to ten photos, with a swipeable lightbox. Photos are compressed and stored locally only. |
-| 6 | **Ten Reasons** | One card at a time, each with its own icon and glow, ending in a final message. |
+| 6 | **Ten Reasons** | Ten reasons hidden inside a rose — each touch unfolds a petal and lets one reason drift out, until the rose is in full bloom. |
 | 7 | **The Finale** | Aurora, a glowing heart, the last lines of the message, confetti, and a button to live it all again. |
 
 A discreet floating bar carries previous / next, progress dots, replay, and

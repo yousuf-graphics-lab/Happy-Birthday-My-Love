@@ -111,7 +111,9 @@ export const MEMORIES = {
 
 // SCREEN 06 — 10 Reasons Why You Are Special --------------------------------
 export const REASONS = {
+  eyebrow: "PETAL BY PETAL",
   heading: "10 Little Things I Adore About You",
+  hint: "touch the rose to unfold a reason",
   items: [
     { icon: "sparkles", text: "Your beautiful smile that can change an ordinary day." },
     { icon: "wand", text: "The way you make little moments feel special." },
