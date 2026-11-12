@@ -250,3 +250,14 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* No-JS (or blocked-script) safety net: the entrance animations start at
+   opacity 0, so reveal everything if scripting is unavailable. */
+@media (scripting: none) {
+  [style*="opacity: 0"],
+  [style*="opacity:0"] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
