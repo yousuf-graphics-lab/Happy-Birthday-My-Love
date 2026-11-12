@@ -104,7 +104,7 @@ export default function Screen07Finale({ onReplay }: { onReplay: () => void }) {
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/70 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-rose/40 to-transparent" />
           <div className="flex flex-col gap-5">
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {FINALE.lines.slice(0, line).map((text, i) => (
                 <motion.p
                   key={i}
