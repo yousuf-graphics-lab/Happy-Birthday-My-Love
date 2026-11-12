@@ -75,7 +75,7 @@ class AudioEngine {
   private musicStarted = false;
   private echoSend: DelayNode | null = null;
 
-  private prefs: AudioPreferences = DEFAULT_AUDIO_PREFS;
+  private prefs: AudioPreferences = { ...DEFAULT_AUDIO_PREFS };
   private listeners = new Set<() => void>();
 
   constructor() {
@@ -93,7 +93,7 @@ class AudioEngine {
     } catch {
       /* ignore */
     }
-    return DEFAULT_AUDIO_PREFS;
+    return { ...DEFAULT_AUDIO_PREFS };
   }
 
   private savePrefs() {
