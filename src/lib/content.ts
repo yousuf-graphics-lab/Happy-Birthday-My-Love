@@ -16,9 +16,18 @@ export const SITE = {
 export const WELCOME = {
   eyebrow: "A LITTLE SOMETHING FOR YOU",
   heading: "Hey, My Samiya...",
+  // the heading is rendered in three parts so her name can carry the foil
+  headingLead: "Hey, My",
+  headingName: "Samiya",
+  headingTail: "...",
   supporting:
     "I made a little universe just for you. Are you ready to discover it?",
-  button: "Open Your Surprise 💌",
+  button: "Open Your Surprise",
+  hint: "tap the envelope",
+  // what the little card inside says
+  cardTo: "For My Samiya",
+  cardNote: "with all my love",
+  cardSignature: "Yousuf",
 };
 
 // SCREEN 02 — The Grand Birthday Reveal ------------------------------------
