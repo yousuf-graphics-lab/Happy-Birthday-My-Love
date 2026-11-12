@@ -23,7 +23,7 @@ export default function Screen03Letter({ onContinue }: { onContinue: () => void 
     const t = window.setTimeout(() => {
       setRevealed((r) => r + 1);
       playSfx("sparkle");
-    }, revealed === 0 ? 700 : 2600);
+    }, revealed === 0 ? 700 : 2100);
     return () => window.clearTimeout(t);
   }, [revealed, playSfx]);
 
