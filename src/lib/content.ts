@@ -109,24 +109,96 @@ export const MEMORIES = {
   continue: "There's Still More 💕",
 };
 
-// SCREEN 06 — 10 Reasons Why You Are Special --------------------------------
+// SCREEN 06 — Ten Notes, Each With Its Own Flower ---------------------------
+// Five Roman Urdu notes, then five Banglish ones — kept exactly as written.
 export const REASONS = {
   eyebrow: "PETAL BY PETAL",
   heading: "10 Little Things I Adore About You",
-  hint: "touch the rose to unfold a reason",
+  hint: "touch the garden and a flower will bloom",
+  counter: "flowers bloomed",
   items: [
-    { icon: "sparkles", text: "Your beautiful smile that can change an ordinary day." },
-    { icon: "wand", text: "The way you make little moments feel special." },
-    { icon: "hand", text: "Your kindness, even when nobody notices." },
-    { icon: "feather", text: "Your unique way of expressing yourself." },
-    { icon: "sun", text: "The happiness you bring into my life." },
-    { icon: "heart", text: "Your beautiful heart." },
-    { icon: "gift", text: "The little things you do without realizing how special they are." },
-    { icon: "star", text: "The way you make me smile." },
-    { icon: "moon", text: "Your dreams and the person you are becoming." },
-    { icon: "crown", text: "Simply because you are Samiya, and nobody could ever replace that." },
+    {
+      lang: "Roman Urdu",
+      flower: "rose",
+      lines: [
+        "Tumhari muskurahat mein kuch toh baat hai,",
+        "Jo mere dil ko har roz tumse milne ki wajah deti hai.",
+      ],
+    },
+    {
+      lang: "Roman Urdu",
+      flower: "jasmine",
+      lines: [
+        "Na chaand ki khwahish, na sitaaron ki talab hai,",
+        "Mujhe toh bas tumhara saath chahiye, kyunki tum hi meri sabse khoobsurat talab ho.",
+      ],
+    },
+    {
+      lang: "Roman Urdu",
+      flower: "tulip",
+      lines: [
+        "Tumse baat ho toh waqt tham sa jaata hai,",
+        "Aur tum na ho toh har lamha kuch adhoora reh jaata hai.",
+      ],
+    },
+    {
+      lang: "Roman Urdu",
+      flower: "lily",
+      lines: [
+        "Tumhari saadgi mein bhi kisi ghazal se kam nahi,",
+        "Tum jaisi ho, waisi hi tumse behtar koi nahi.",
+      ],
+    },
+    {
+      lang: "Roman Urdu",
+      flower: "gold",
+      lines: [
+        "Meri har dua mein sirf tumhara naam rehta hai,",
+        "Tum na ho to jindazi main sab kuch adhura lagta hai.",
+      ],
+    },
+    {
+      lang: "Banglish",
+      flower: "peony",
+      lines: [
+        "Tomar hashi dekhe amar moner shob klanti hariye jay,",
+        "Mone hoy prithibir shob shukh jeno tomar majhei khuje pai.",
+      ],
+    },
+    {
+      lang: "Banglish",
+      flower: "daisy",
+      lines: [
+        "Tumi pashe thakle shomoy tao Kemon jeno theme jay,",
+        "Ar dure thakle protita muhurto tomakei khuje beray.",
+      ],
+    },
+    {
+      lang: "Banglish",
+      flower: "camellia",
+      lines: [
+        "Tomar majhe emon kichu ache ja bhashay bujhano jay na,",
+        "Shudhu etuku jani, tomake chara amar golpota shompurno hoy na.",
+      ],
+    },
+    {
+      lang: "Banglish",
+      flower: "orchid",
+      lines: [
+        "Shoto manusher bhireo amar chokh sudhu tomakei khuje,",
+        "Hoyto etakei bhalobasha bole, jokhon mon ekjonkei bujhe.",
+      ],
+    },
+    {
+      lang: "Banglish",
+      flower: "blush-rose",
+      lines: [
+        "Tumi kono kobita naw, tobu tomake niye likhte ichhe kore,",
+        "Tumi kono shopno naw, tobu tomakei dekhte icche kore.",
+      ],
+    },
   ],
-  finale: "Need I say more? You're simply one of a kind. ❤️",
+  finale: "Ten flowers, ten notes — and still not enough words for you. ❤️",
   continue: "One Last Surprise Awaits 🌟",
 };
 
