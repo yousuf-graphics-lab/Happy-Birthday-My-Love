@@ -24,7 +24,7 @@ export default function Screen03Letter({ onContinue }: { onContinue: () => void 
     const t = window.setTimeout(() => {
       setRevealed((r) => r + 1);
       playSfx("sparkle");
-    }, revealed === 0 ? 700 : 2100);
+    }, revealed === 0 ? 650 : 1700);
     return () => window.clearTimeout(t);
   }, [revealed, playSfx]);
 
@@ -92,8 +92,8 @@ export default function Screen03Letter({ onContinue }: { onContinue: () => void 
           </motion.span>
 
           <div className="relative pl-4 sm:pl-6">
-            {LETTER.paragraphs.slice(0, revealed).map((para, i) => (
-              <InkParagraph key={i} text={para} />
+            {LETTER.paragraphs.map((para, i) => (
+              <InkParagraph key={i} text={para} active={i < revealed} />
             ))}
 
             <SignatureBlock visible={signatureRevealed} name={LETTER.signature} />
@@ -133,44 +133,49 @@ export default function Screen03Letter({ onContinue }: { onContinue: () => void 
 
 /* -------------------------------------------------------------------------- */
 
-// A paragraph that inks in word by word — the letter appears to be written.
-function InkParagraph({ text }: { text: string }) {
+// A paragraph that inks in word by word once it becomes active. Every word
+// is laid out from the start, so the card never jumps as the letter grows.
+function InkParagraph({ text, active }: { text: string; active: boolean }) {
   const words = text.split(" ");
 
   return (
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="mb-3 font-hand text-[1.55rem] leading-[1.5] text-soft/90 sm:text-[1.8rem]"
-    >
+    <p className="mb-3 font-hand text-[1.55rem] leading-[1.55] text-soft/90 sm:text-[1.8rem]">
       {words.map((word, i) => (
         <motion.span
           key={`${word}-${i}`}
           className="inline-block whitespace-pre"
-          initial={{ opacity: 0, y: 8, filter: "blur(5px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{
-            duration: 0.55,
-            delay: i * 0.045,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          initial={false}
+          animate={
+            active
+              ? { opacity: 1, y: 0, filter: "blur(0px)" }
+              : { opacity: 0, y: 5, filter: "blur(4px)" }
+          }
+          transition={
+            active
+              ? {
+                  duration: 0.42,
+                  delay: i * 0.032,
+                  ease: [0.22, 1, 0.36, 1],
+                }
+              : { duration: 0.2 }
+          }
         >
           {word}
           {i < words.length - 1 ? " " : ""}
         </motion.span>
       ))}
-    </motion.p>
+    </p>
   );
 }
 
 function SignatureBlock({ visible, name }: { visible: boolean; name: string }) {
-  if (!visible) return null;
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, delay: 0.25 }}
+      initial={false}
+      animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      transition={{ duration: 0.9, delay: visible ? 0.25 : 0 }}
       className="mt-6"
+      aria-hidden={!visible}
     >
       <div className="mb-3 flex items-center gap-3">
         <motion.div
@@ -216,9 +221,9 @@ function SignatureBlock({ visible, name }: { visible: boolean; name: string }) {
             stroke="currentColor"
             strokeWidth="1.6"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ delay: 0.7, duration: 1.2, ease: "easeInOut" }}
+            initial={false}
+            animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+            transition={{ delay: visible ? 0.7 : 0, duration: 1.2, ease: "easeInOut" }}
           />
         </svg>
       </motion.div>

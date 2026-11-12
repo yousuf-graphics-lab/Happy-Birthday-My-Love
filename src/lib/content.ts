@@ -40,7 +40,7 @@ export const REVEAL = {
     "Some people make the world brighter just by being in it. And today, the world has another reason to celebrate.",
   cakePrompt:
     "Close your eyes, make a wish, and blow out your candles...",
-  blowHint: "🎤 Tap the microphone button, blow, or tap a candle to blow it out",
+  blowHint: "touch the cake to blow out the candles",
   micButton: "Enable Microphone",
   micListening: "Listening… blow when ready",
   micError:
@@ -70,6 +70,7 @@ export const LETTER = {
 
 // SCREEN 04 — A Bouquet For Her --------------------------------------------
 export const BOUQUET = {
+  eyebrow: "A BOUQUET, JUST FOR YOU",
   heading: "For The Girl Who Makes My World Beautiful",
   // The poem Yousuf wrote for Samiya — kept exactly as given.
   poem: [

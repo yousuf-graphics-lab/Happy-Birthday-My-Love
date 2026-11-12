@@ -35,18 +35,32 @@ const DEFAULT_PREFS: AudioPreferences = {
   sfxVolume: 0.8,
 };
 
-// Frequencies (Hz) for the romantic pad progression: Am – F – C – G
-const PAD_CHORDS: number[][] = [
-  [220.0, 261.63, 329.63, 440.0], // Am
-  [174.61, 220.0, 261.63, 349.23], // F
-  [261.63, 329.63, 392.0, 523.25], // C
-  [196.0, 246.94, 293.66, 392.0], // G
+// A slow bansuri phrase in A minor. `null` is a rest, in seconds.
+type FluteStep = { f: number; d: number } | null;
+
+const FLUTE_MELODY: FluteStep[] = [
+  { f: 440.0, d: 1.2 }, // A4
+  { f: 523.25, d: 0.9 }, // C5
+  { f: 587.33, d: 1.4 }, // D5
+  { f: 523.25, d: 0.8 },
+  null,
+  { f: 659.25, d: 1.3 }, // E5
+  { f: 783.99, d: 1.0 }, // G5
+  { f: 880.0, d: 1.8 }, // A5
+  null,
+  { f: 783.99, d: 0.9 },
+  { f: 659.25, d: 1.2 },
+  { f: 587.33, d: 0.9 },
+  { f: 523.25, d: 1.5 },
+  null,
+  { f: 440.0, d: 1.1 },
+  { f: 392.0, d: 1.3 }, // G4
+  { f: 440.0, d: 2.0 },
+  null,
 ];
 
-// Gentle pentatonic arpeggio notes for the music box layer.
-const ARPEGGIO: number[] = [
-  523.25, 587.33, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33,
-];
+// The soft tanpura-like drone that sits under the flute.
+const DRONE_NOTES = [110.0, 164.81, 220.0]; // A2, E3, A3
 
 class AudioEngine {
   private ctx: AudioContext | null = null;
@@ -55,11 +69,11 @@ class AudioEngine {
   private sfxGain: GainNode | null = null;
 
   private musicTimer: ReturnType<typeof setInterval> | null = null;
-  private arpStep = 0;
-  private chordIndex = 0;
-  private nextArpTime = 0;
+  private melodyIndex = 0;
+  private nextNoteTime = 0;
   private musicVoices: OscillatorNode[] = [];
   private musicStarted = false;
+  private echoSend: DelayNode | null = null;
 
   private prefs: AudioPreferences = DEFAULT_PREFS;
   private listeners = new Set<() => void>();
@@ -142,11 +156,10 @@ class AudioEngine {
     const ctx = this.ensureContext();
     if (ctx.state === "suspended") void ctx.resume();
     this.musicStarted = true;
-    this.chordIndex = 0;
-    this.arpStep = 0;
-    this.nextArpTime = ctx.currentTime + 0.2;
-    this.startPad();
-    this.musicTimer = setInterval(() => this.scheduleArp(), 40);
+    this.melodyIndex = 0;
+    this.nextNoteTime = ctx.currentTime + 0.4;
+    this.startDrone();
+    this.musicTimer = setInterval(() => this.scheduleFlute(), 120);
     this.applyMusicGain();
   }
 
@@ -157,7 +170,7 @@ class AudioEngine {
       clearInterval(this.musicTimer);
       this.musicTimer = null;
     }
-    this.stopPad();
+    this.stopVoices();
     this.applyMusicGain();
   }
 
@@ -180,50 +193,45 @@ class AudioEngine {
     this.sfxGain.gain.linearRampToValueAtTime(target, now + 0.4);
   }
 
-  // Slow detuned sine pad — one oscillator pair per chord tone.
-  private startPad() {
+  // A soft A-minor drone, barely there — it just gives the flute a floor.
+  private startDrone() {
     if (!this.ctx || !this.musicGain) return;
     const ctx = this.ctx;
-    const chord = PAD_CHORDS[this.chordIndex % PAD_CHORDS.length];
     const now = ctx.currentTime;
-    const padOut = ctx.createGain();
-    padOut.gain.value = 0;
-    padOut.gain.linearRampToValueAtTime(0.16, now + 2.5);
-    padOut.gain.setValueAtTime(0.16, now + 16);
-    padOut.gain.linearRampToValueAtTime(0, now + 18.5);
-    padOut.connect(this.musicGain);
+    const bus = ctx.createGain();
+    bus.gain.value = 0;
+    bus.gain.linearRampToValueAtTime(0.05, now + 3);
+    bus.connect(this.musicGain);
 
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 1200;
-    filter.Q.value = 0.6;
-    filter.connect(padOut);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 700;
+    lp.connect(bus);
 
-    chord.forEach((freq, i) => {
-      [0, 1].forEach((detune, k) => {
-        const osc = ctx.createOscillator();
-        osc.type = k === 0 ? "sine" : "triangle";
-        osc.frequency.value = freq;
-        osc.detune.value = detune === 0 ? -4 : 5;
-        const g = ctx.createGain();
-        g.gain.value = 0.5 / chord.length;
-        osc.connect(g);
-        g.connect(filter);
-        osc.start(now);
-        osc.stop(now + 19);
-        this.musicVoices.push(osc);
-      });
-      void i;
+    DRONE_NOTES.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      osc.detune.value = i === 1 ? 4 : -3;
+      const g = ctx.createGain();
+      g.gain.value = 0.5 / DRONE_NOTES.length;
+      // slow breathing so the drone never sounds like a test tone
+      const lfo = ctx.createOscillator();
+      lfo.type = "sine";
+      lfo.frequency.value = 0.07 + i * 0.02;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 0.16;
+      lfo.connect(lfoGain);
+      lfoGain.connect(g.gain);
+      osc.connect(g);
+      g.connect(lp);
+      osc.start(now);
+      lfo.start(now);
+      this.musicVoices.push(osc, lfo);
     });
-
-    // Crossfade into the next chord before this one fades out.
-    setTimeout(() => {
-      this.chordIndex++;
-      if (this.musicStarted) this.startPad();
-    }, 16000);
   }
 
-  private stopPad() {
+  private stopVoices() {
     this.musicVoices.forEach((osc) => {
       try {
         osc.stop();
@@ -234,42 +242,119 @@ class AudioEngine {
     this.musicVoices = [];
   }
 
-  // Music-box arpeggio, scheduled ahead of time for sample-accurate timing.
-  private scheduleArp() {
+  // Schedule the melody a little ahead of the clock so timing stays steady.
+  private scheduleFlute() {
     if (!this.ctx || !this.musicGain || !this.musicStarted) return;
     const ctx = this.ctx;
-    const lookahead = 0.1;
-    while (this.nextArpTime < ctx.currentTime + lookahead) {
-      const note = ARPEGGIO[this.arpStep % ARPEGGIO.length];
-      this.playArpNote(note, this.nextArpTime);
-      this.nextArpTime += 0.42;
-      this.arpStep++;
+    const lookahead = 0.4;
+    while (this.nextNoteTime < ctx.currentTime + lookahead) {
+      const step = FLUTE_MELODY[this.melodyIndex % FLUTE_MELODY.length];
+      if (step) {
+        this.playFluteNote(step.f, this.nextNoteTime, step.d);
+        // leave a breath between phrases so notes never run together
+        this.nextNoteTime += step.d + 0.12;
+      } else {
+        this.nextNoteTime += 0.7;
+      }
+      this.melodyIndex++;
     }
   }
 
-  private playArpNote(freq: number, time: number) {
+  // A breathy bansuri voice: scooped attack, delayed vibrato, air noise and
+  // a long tail through a soft echo.
+  private playFluteNote(freq: number, time: number, duration: number) {
     if (!this.ctx || !this.musicGain) return;
     const ctx = this.ctx;
+    const out = ctx.createGain();
+    out.gain.value = 0;
+
+    // main body
     const osc = ctx.createOscillator();
     osc.type = "sine";
-    osc.frequency.value = freq;
-    const osc2 = ctx.createOscillator();
-    osc2.type = "triangle";
-    osc2.frequency.value = freq * 2;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0, time);
-    g.gain.linearRampToValueAtTime(0.05, time + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, time + 0.9);
-    const pan = ctx.createStereoPanner();
-    pan.pan.value = (Math.sin(this.arpStep * 0.7) * 0.35);
-    osc.connect(g);
-    osc2.connect(g);
-    g.connect(pan);
-    pan.connect(this.musicGain);
+    osc.frequency.setValueAtTime(freq * 0.987, time);
+    osc.frequency.exponentialRampToValueAtTime(freq, time + 0.07);
+
+    // a touch of the octave keeps it from sounding like a pure test tone
+    const shimmer = ctx.createOscillator();
+    shimmer.type = "triangle";
+    shimmer.frequency.value = freq * 2;
+    const shimmerGain = ctx.createGain();
+    shimmerGain.gain.value = 0.07;
+
+    // vibrato fades in as a real player's would
+    const lfo = ctx.createOscillator();
+    lfo.type = "sine";
+    lfo.frequency.value = 4.8;
+    const vib = ctx.createGain();
+    vib.gain.setValueAtTime(0, time);
+    vib.gain.linearRampToValueAtTime(3.4, time + duration * 0.55);
+    lfo.connect(vib);
+    vib.connect(osc.detune);
+
+    // breath noise at the attack
+    const air = ctx.createBufferSource();
+    air.buffer = this.noiseBuffer(ctx, 0.4);
+    const airFilter = ctx.createBiquadFilter();
+    airFilter.type = "bandpass";
+    airFilter.frequency.value = 1800;
+    airFilter.Q.value = 0.9;
+    const airGain = ctx.createGain();
+    airGain.gain.setValueAtTime(0, time);
+    airGain.gain.linearRampToValueAtTime(0.05, time + 0.06);
+    airGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.5);
+
+    // note envelope: soft onset, gentle swell, long release
+    const peak = 0.13;
+    out.gain.setValueAtTime(0, time);
+    out.gain.linearRampToValueAtTime(peak, time + 0.11);
+    out.gain.linearRampToValueAtTime(peak * 1.12, time + duration * 0.6);
+    out.gain.exponentialRampToValueAtTime(0.0001, time + duration + 0.5);
+
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 2600;
+    lp.Q.value = 0.4;
+
+    osc.connect(lp);
+    shimmer.connect(shimmerGain);
+    shimmerGain.connect(lp);
+    lp.connect(out);
+    air.connect(airFilter);
+    airFilter.connect(airGain);
+    airGain.connect(out);
+
+    out.connect(this.musicGain);
+
+    // shared echo, created lazily
+    const musicOut = this.musicGain;
+    if (!this.echoSend) {
+      const delay = ctx.createDelay(1);
+      delay.delayTime.value = 0.38;
+      const feedback = ctx.createGain();
+      feedback.gain.value = 0.24;
+      const damp = ctx.createBiquadFilter();
+      damp.type = "lowpass";
+      damp.frequency.value = 1800;
+      delay.connect(damp);
+      damp.connect(feedback);
+      feedback.connect(delay);
+      delay.connect(musicOut);
+      this.echoSend = delay;
+    }
+    const send = ctx.createGain();
+    send.gain.value = 0.22;
+    out.connect(send);
+    send.connect(this.echoSend);
+
+    const stopAt = time + duration + 0.7;
     osc.start(time);
-    osc2.start(time);
-    osc.stop(time + 1);
-    osc2.stop(time + 1);
+    shimmer.start(time);
+    lfo.start(time);
+    air.start(time);
+    osc.stop(stopAt);
+    shimmer.stop(stopAt);
+    lfo.stop(stopAt);
+    air.stop(stopAt);
   }
 
   // -- sound effects --------------------------------------------------------

@@ -1,9 +1,8 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// JourneyNav — discreet floating progress indicator.
-// Shows the birthday journey progress, previous/next/replay, and
-// music + sound-effect toggles. No conventional navbar anywhere.
+// JourneyNav — a whisper of navigation. Tiny, transparent, pinned to the top
+// edge: previous/next, progress dots, replay and the audio toggles.
 // ---------------------------------------------------------------------------
 
 import { motion } from "framer-motion";
@@ -33,15 +32,15 @@ export default function JourneyNav({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.2, duration: 0.8 }}
-      className="fixed bottom-4 left-1/2 z-40 flex w-[94vw] max-w-md items-center gap-2 rounded-2xl border border-soft/10 bg-plum/70 p-2 backdrop-blur-xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.9)] sm:bottom-6"
+      className="fixed left-1/2 top-3 z-40 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-soft/10 bg-plum/25 px-1.5 py-1 opacity-55 backdrop-blur-md transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 sm:top-4"
     >
       {/* prev */}
       <NavButton onClick={onPrev} disabled={screen === 0} ariaLabel="Previous screen">
-        <ChevronLeft className="h-5 w-5" />
+        <ChevronLeft className="h-3.5 w-3.5" />
       </NavButton>
 
       {/* progress dots */}
-      <div className="flex flex-1 items-center justify-center gap-1.5">
+      <div className="flex items-center justify-center gap-1 px-1">
         {SCREEN_TITLES.map((title, i) => (
           <button
             key={i}
@@ -49,12 +48,12 @@ export default function JourneyNav({
             onClick={() => i !== screen && onJump(i)}
             aria-label={`Go to ${title}`}
             title={title}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 ${
               i === screen
-                ? "w-7 bg-gradient-to-r from-rose to-violet"
+                ? "h-1.5 w-4 bg-gradient-to-r from-rose to-violet"
                 : i < screen
-                ? "w-2 bg-champagne/60"
-                : "w-2 bg-soft/20"
+                ? "h-1.5 w-1.5 bg-champagne/70"
+                : "h-1.5 w-1.5 bg-soft/25"
             }`}
           />
         ))}
@@ -62,22 +61,23 @@ export default function JourneyNav({
 
       {/* next */}
       <NavButton onClick={onNext} disabled={screen === total - 1} ariaLabel="Next screen">
-        <ChevronRight className="h-5 w-5" />
+        <ChevronRight className="h-3.5 w-3.5" />
       </NavButton>
 
       {/* replay */}
+      <span className="mx-0.5 h-3 w-px bg-soft/15" aria-hidden="true" />
       <NavButton onClick={onReplay} ariaLabel="Replay experience">
-        <RotateCcw className="h-4 w-4" />
+        <RotateCcw className="h-3 w-3" />
       </NavButton>
 
       {/* music */}
       <NavButton onClick={toggleMusic} ariaLabel={musicOn ? "Pause music" : "Play music"}>
-        {musicOn ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        {musicOn ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
       </NavButton>
 
       {/* sound effects */}
       <NavButton onClick={toggleSfx} ariaLabel={sfxOn ? "Disable sound effects" : "Enable sound effects"}>
-        {sfxOn ? <Headphones className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        {sfxOn ? <Headphones className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
       </NavButton>
     </motion.div>
   );
@@ -102,7 +102,7 @@ function NavButton({
       whileHover={disabled ? undefined : { scale: 1.12 }}
       whileTap={disabled ? undefined : { scale: 0.94 }}
       aria-label={ariaLabel}
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-soft/70 transition hover:bg-soft/10 hover:text-soft disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-soft/70 transition hover:bg-soft/10 hover:text-soft disabled:cursor-not-allowed disabled:opacity-25"
     >
       {children}
     </motion.button>

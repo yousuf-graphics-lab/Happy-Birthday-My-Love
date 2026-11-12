@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------------
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, Mic, MicOff, Sparkles } from "lucide-react";
+import { Heart, Mic } from "lucide-react";
 import { useRef, useState } from "react";
 import BirthdayCake from "@/components/cake/BirthdayCake";
 import MagicButton from "@/components/ui/MagicButton";
@@ -33,8 +33,6 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
   candlesRef.current = candles;
   celebratingRef.current = celebrating;
 
-  const blownCount = candles.filter((c) => !c).length;
-
   const finish = () => {
     if (celebratingRef.current) return;
     celebratingRef.current = true;
@@ -51,12 +49,6 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
     else playSfx("blow");
   };
 
-  const blowCandle = (index: number) => {
-    const prev = candlesRef.current;
-    if (celebratingRef.current || !prev[index]) return;
-    applyCandles(prev.map((lit, i) => (i === index ? false : lit)));
-  };
-
   const blowAll = () => {
     if (celebratingRef.current || !candlesRef.current.some(Boolean)) return;
     applyCandles(Array(CANDLE_COUNT).fill(false));
@@ -64,9 +56,7 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
 
   const detector = useBreathDetector(() => {
     if (celebratingRef.current) return;
-    const firstLit = candlesRef.current.findIndex(Boolean);
-    if (firstLit === -1) return;
-    blowCandle(firstLit);
+    blowAll();
   });
 
   return (
@@ -129,9 +119,29 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         initial={{ opacity: 0, y: 40, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ delay: 1.2, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-10"
+        className="mt-8"
       >
-        <BirthdayCake litCandles={candles} celebrating={celebrating} />
+        <motion.button
+          type="button"
+          onClick={blowAll}
+          disabled={celebrating}
+          aria-label="Blow out the candles"
+          whileTap={celebrating ? undefined : { scale: 0.97 }}
+          className={`relative rounded-[32px] bg-transparent p-2 transition disabled:cursor-default ${
+            celebrating ? "" : "cursor-pointer"
+          }`}
+        >
+          {/* gentle invitation ring while the candles are lit */}
+          {!celebrating && (
+            <motion.span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-6 bottom-6 top-6 rounded-[28px] border border-champagne/20"
+              animate={{ opacity: [0.15, 0.5, 0.15], scale: [0.99, 1.01, 0.99] }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+            />
+          )}
+          <BirthdayCake litCandles={candles} celebrating={celebrating} />
+        </motion.button>
       </motion.div>
 
       {/* candle prompt / wish message */}
@@ -227,33 +237,9 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
             <p className="max-w-xs text-sm text-rose/80">{REVEAL.micError}</p>
           )}
 
-          <p className="text-xs text-soft/45">{REVEAL.blowHint}</p>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {candles.map((lit, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Blow candle ${i + 1}`}
-                onClick={() => blowCandle(i)}
-                disabled={!lit}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-soft/15 bg-plum/60 text-xl transition hover:scale-110 hover:border-rose/50 disabled:opacity-25"
-              >
-                {lit ? "🔥" : "💨"}
-              </button>
-            ))}
-          </div>
-
-          {blownCount > 0 && blownCount < CANDLE_COUNT && (
-            <button
-              type="button"
-              onClick={blowAll}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-champagne/90 underline-offset-4 transition hover:underline"
-            >
-              <Sparkles className="h-4 w-4" />
-              {REVEAL.blowAll}
-            </button>
-          )}
+          <p className="text-xs uppercase tracking-[0.22em] text-soft/45">
+            {REVEAL.blowHint}
+          </p>
         </motion.div>
       )}
 
