@@ -17,6 +17,7 @@ export type SfxName =
   | "celebration"
   | "bloom"
   | "chime"
+  | "firework"
   | "click";
 
 type AudioPreferences = {
@@ -383,6 +384,9 @@ class AudioEngine {
       case "chime":
         this.chime(ctx);
         break;
+      case "firework":
+        this.firework(ctx);
+        break;
       case "click":
         this.click(ctx);
         break;
@@ -530,6 +534,60 @@ class AudioEngine {
       g.connect(this.sfxGain!);
       osc.start(time + i * 0.06);
       osc.stop(time + i * 0.06 + 2.5);
+    });
+  }
+
+  // A little sky-show: a rising whistle, a soft boom and a scatter of crackles.
+  private firework(ctx: AudioContext) {
+    const start = ctx.currentTime;
+    [0, 0.44, 0.92].forEach((offset, b) => {
+      const at = start + offset;
+
+      // the whistle on the way up
+      const whistle = ctx.createOscillator();
+      whistle.type = "sine";
+      const whistleFrom = Math.max(start, at - 0.34);
+      whistle.frequency.setValueAtTime(540 + b * 80, whistleFrom);
+      whistle.frequency.exponentialRampToValueAtTime(1480 + b * 110, at);
+      const whistleGain = ctx.createGain();
+      this.env(ctx, whistleGain, 0.028, 0.18, 0.18, whistleFrom);
+      whistle.connect(whistleGain);
+      whistleGain.connect(this.sfxGain!);
+      whistle.start(whistleFrom);
+      whistle.stop(at + 0.08);
+
+      // the burst
+      const boom = ctx.createBufferSource();
+      boom.buffer = this.noiseBuffer(ctx, 0.6);
+      const low = ctx.createBiquadFilter();
+      low.type = "lowpass";
+      low.frequency.setValueAtTime(1400, at);
+      low.frequency.exponentialRampToValueAtTime(240, at + 0.4);
+      const boomGain = ctx.createGain();
+      this.env(ctx, boomGain, 0.15, 0.006, 0.48, at);
+      boom.connect(low);
+      low.connect(boomGain);
+      boomGain.connect(this.sfxGain!);
+      boom.start(at);
+      boom.stop(at + 0.65);
+
+      // crackles falling out of the burst
+      for (let i = 0; i < 7; i++) {
+        const crackAt = at + 0.06 + Math.random() * 0.5;
+        const crack = ctx.createBufferSource();
+        crack.buffer = this.noiseBuffer(ctx, 0.07);
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = 2400 + Math.random() * 2200;
+        bp.Q.value = 2;
+        const crackGain = ctx.createGain();
+        this.env(ctx, crackGain, 0.045, 0.002, 0.07, crackAt);
+        crack.connect(bp);
+        bp.connect(crackGain);
+        crackGain.connect(this.sfxGain!);
+        crack.start(crackAt);
+        crack.stop(crackAt + 0.12);
+      }
     });
   }
 

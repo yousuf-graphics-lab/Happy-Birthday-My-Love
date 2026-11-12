@@ -14,6 +14,7 @@ import MagicButton from "@/components/ui/MagicButton";
 import { useAudio } from "@/components/AudioProvider";
 import { REASONS } from "@/lib/content";
 import { goldenBurst } from "@/lib/confetti";
+import { firecrackers } from "@/lib/fireworks";
 
 const TOTAL = REASONS.items.length;
 
@@ -51,6 +52,9 @@ export default function Screen06Reasons({ onContinue }: { onContinue: () => void
       setBurst(true);
       window.setTimeout(() => playSfx("celebration"), 240);
       window.setTimeout(() => goldenBurst(0.5, 0.38), 300);
+      // the last note is read — send up the firecrackers
+      window.setTimeout(() => playSfx("firework"), 620);
+      window.setTimeout(() => firecrackers(8), 660);
     }
   };
 

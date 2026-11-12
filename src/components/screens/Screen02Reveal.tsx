@@ -16,6 +16,7 @@ import { useAudio } from "@/components/AudioProvider";
 import { useBreathDetector } from "@/hooks/useBreathDetector";
 import { REVEAL } from "@/lib/content";
 import { celebrationBurst } from "@/lib/confetti";
+import { firecrackers } from "@/lib/fireworks";
 
 const CANDLE_COUNT = 5;
 
@@ -40,6 +41,9 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
     playSfx("blow");
     window.setTimeout(() => playSfx("celebration"), 300);
     window.setTimeout(() => celebrationBurst(), 420);
+    // firecrackers over the cake once the wish is made
+    window.setTimeout(() => playSfx("firework"), 780);
+    window.setTimeout(() => firecrackers(7), 820);
   };
 
   const applyCandles = (next: boolean[]) => {
