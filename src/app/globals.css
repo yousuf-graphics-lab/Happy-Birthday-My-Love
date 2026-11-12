@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   FOR SAMIYA 💕 — Midnight Romantic Design System
+   ========================================================================= */
+
+@theme {
+  /* Palette */
+  --color-midnight: #0b0713;
+  --color-plum: #1a0f2b;
+  --color-rose: #ff4d8d;
+  --color-violet: #a855f7;
+  --color-champagne: #ffd9a0;
+  --color-soft: #fff7fb;
+
+  /* Typography */
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", cursive;
+  --font-devanagari: "Noto Sans Devanagari", "Inter", sans-serif;
+
+  /* Motion */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 11s ease-in-out infinite;
+  --animate-twinkle: twinkle 3.5s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-pulse-glow: pulseGlow 3s ease-in-out infinite;
+  --animate-aurora: auroraShift 18s ease-in-out infinite;
+  --animate-petal-fall: petalFall 9s linear infinite;
+  --animate-heart-rise: heartRise 7s ease-in-out infinite;
+
+  /* Custom easing */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------- base layer ------------------------------- */
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-midnight);
+  color: var(--color-soft);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Deep midnight gradient that lives behind everything */
+.midnight-bg {
+  background:
+    radial-gradient(120% 90% at 50% -10%, #2a1448 0%, transparent 55%),
+    radial-gradient(80% 60% at 12% 25%, rgba(168, 85, 247, 0.16) 0%, transparent 60%),
+    radial-gradient(80% 60% at 88% 35%, rgba(255, 77, 141, 0.14) 0%, transparent 60%),
+    linear-gradient(180deg, #0b0713 0%, #120a20 45%, #0b0713 100%);
+}
+
+/* ---------------------------- glass surface ----------------------------- */
+
+.glass {
+  background: rgba(255, 247, 251, 0.045);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 247, 251, 0.1);
+}
+
+.glass-strong {
+  background: rgba(26, 15, 43, 0.55);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  border: 1px solid rgba(255, 77, 141, 0.22);
+}
+
+.glass-gold {
+  background: rgba(26, 15, 43, 0.45);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 217, 160, 0.3);
+}
+
+/* --------------------------- text treatments ---------------------------- */
+
+.text-gradient-rose {
+  background: linear-gradient(100deg, #ff4d8d 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(100deg, #ffe9c4 0%, #ffd9a0 45%, #ffb3d1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow {
+  font-size: clamp(0.62rem, 1.6vw, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  opacity: 0.85;
+}
+
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+.font-deva {
+  font-family: var(--font-devanagari);
+}
+
+/* --------------------------- keyframes --------------------------------- */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 60px -10px rgba(255, 77, 141, 0.5),
+      0 0 140px -40px rgba(168, 85, 247, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 100px -5px rgba(255, 77, 141, 0.75),
+      0 0 200px -30px rgba(168, 85, 247, 0.85);
+  }
+}
+
+@keyframes auroraShift {
+  0%, 100% {
+    transform: translate3d(-6%, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  33% {
+    transform: translate3d(7%, -4%, 0) scale(1.12);
+    opacity: 0.7;
+  }
+  66% {
+    transform: translate3d(-3%, 5%, 0) scale(0.95);
+    opacity: 0.6;
+  }
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.7; }
+  100% {
+    transform: translate3d(4vw, 110vh, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heartRise {
+  0% {
+    transform: translate3d(0, 20vh, 0) scale(0.6);
+    opacity: 0;
+  }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.7; }
+  100% {
+    transform: translate3d(2vw, -110vh, 0) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* ----------------------- candle flame flicker --------------------------- */
+
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1, 1) rotate(-1.5deg);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.08, 0.94) rotate(1.5deg);
+    filter: brightness(1.25);
+  }
+  50% {
+    transform: scale(0.96, 1.06) rotate(-1deg);
+    filter: brightness(0.9);
+  }
+  75% {
+    transform: scale(1.05, 0.96) rotate(2deg);
+    filter: brightness(1.15);
+  }
+}
+
+.flame {
+  animation: flameFlicker 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* ---------------------------- utilities -------------------------------- */
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.text-shadow-glow {
+  text-shadow: 0 0 30px rgba(255, 77, 141, 0.55),
+    0 0 60px rgba(168, 85, 247, 0.35);
+}
+
+.shimmer-border {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 217, 160, 0) 20%,
+    rgba(255, 217, 160, 0.55) 50%,
+    rgba(255, 217, 160, 0) 80%
+  );
+  background-size: 200% 100%;
+}
+
+/* Paper grain texture for the love letter */
+.paper-grain {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 217, 160, 0.05) 0, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 77, 141, 0.05) 0, transparent 40%);
+}
+
+/* Reduced motion: calm everything down gracefully */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
