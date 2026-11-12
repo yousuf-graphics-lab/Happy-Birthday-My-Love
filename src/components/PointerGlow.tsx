@@ -1,9 +1,9 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// PointerGlow — the "jori" sparkle effect.
-// Wherever the pointer moves, soft glowing orbs bloom under it and drift
-// upward like tiny auroras. Disabled for touch devices and reduced motion.
+// PointerGlow — a whisper of light under the cursor.
+// A few faint orbs drift up from the pointer, kept deliberately subtle so the
+// content always stays the star. Disabled for touch devices and reduced motion.
 // ---------------------------------------------------------------------------
 
 import { useEffect, useRef } from "react";
@@ -19,7 +19,7 @@ type Orb = {
   hue: "rose" | "violet" | "gold";
 };
 
-const HUES: Orb["hue"][] = ["rose", "violet", "gold"];
+const HUES: Orb["hue"][] = ["rose", "gold", "rose", "violet"];
 
 const GLOW_COLORS: Record<Orb["hue"], string> = {
   rose: "255, 77, 141",
@@ -58,22 +58,20 @@ export default function PointerGlow() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const spawn = (x: number, y: number, count: number) => {
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 10 + Math.random() * 30;
-        orbs.push({
-          x: x + (Math.random() - 0.5) * 24,
-          y: y + (Math.random() - 0.5) * 24,
-          vx: Math.cos(angle) * speed * 0.35,
-          vy: -(Math.sin(angle) * speed * 0.35) - 12,
-          life: 0,
-          maxLife: 900 + Math.random() * 700,
-          size: 3 + Math.random() * 7,
-          hue: HUES[Math.floor(Math.random() * HUES.length)],
-        });
-      }
-      if (orbs.length > 240) orbs.splice(0, orbs.length - 240);
+    const spawn = (x: number, y: number) => {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 6 + Math.random() * 14;
+      orbs.push({
+        x: x + (Math.random() - 0.5) * 14,
+        y: y + (Math.random() - 0.5) * 14,
+        vx: Math.cos(angle) * speed * 0.2,
+        vy: -(Math.sin(angle) * speed * 0.2) - 5,
+        life: 0,
+        maxLife: 500 + Math.random() * 450,
+        size: 1.6 + Math.random() * 2.2,
+        hue: HUES[Math.floor(Math.random() * HUES.length)],
+      });
+      if (orbs.length > 48) orbs.splice(0, orbs.length - 48);
     };
 
     const render = (now: number) => {
@@ -84,25 +82,25 @@ export default function PointerGlow() {
         orb.life += 16;
         orb.x += orb.vx * 0.016;
         orb.y += orb.vy * 0.016;
-        orb.vy -= 6 * 0.016;
+        orb.vy -= 3 * 0.016;
         orb.vx *= 0.98;
         if (orb.life >= orb.maxLife) {
           orbs.splice(i, 1);
           continue;
         }
         const t = orb.life / orb.maxLife;
-        const alpha = (1 - t) * 0.5;
-        const radius = orb.size * (1 + t * 2.2);
+        const alpha = (1 - t) * 0.16;
+        const radius = orb.size * (1 + t * 1.4);
         const color = GLOW_COLORS[orb.hue];
         const gradient = ctx.createRadialGradient(
           orb.x, orb.y, 0,
-          orb.x, orb.y, radius * 6
+          orb.x, orb.y, radius * 3.2
         );
         gradient.addColorStop(0, `rgba(${color}, ${alpha})`);
         gradient.addColorStop(1, `rgba(${color}, 0)`);
         ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(orb.x, orb.y, radius * 6, 0, Math.PI * 2);
+        ctx.arc(orb.x, orb.y, radius * 3.2, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.globalCompositeOperation = "source-over";
@@ -111,9 +109,9 @@ export default function PointerGlow() {
 
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
-      if (now - lastSpawn < 40) return;
+      if (now - lastSpawn < 110) return;
       lastSpawn = now;
-      spawn(e.clientX, e.clientY, 2);
+      spawn(e.clientX, e.clientY);
     };
 
     resize();
