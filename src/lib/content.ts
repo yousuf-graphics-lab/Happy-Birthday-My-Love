@@ -15,10 +15,13 @@ export const SITE = {
 // SCREEN 01 — The Magical Welcome ------------------------------------------
 export const WELCOME = {
   eyebrow: "A LITTLE SOMETHING FOR YOU",
-  heading: "Hey, My Samiya...",
-  // the heading is rendered in three parts so her name can carry the foil
-  headingLead: "Hey, My",
-  headingName: "Samiya",
+  heading: "Hey My Dear, Sweetheart Pakhi...",
+  // the heading is rendered in parts so her name can carry the foil:
+  //   line 1 — headingTopLine
+  //   line 2 — headingLead + headingName + headingTail
+  headingTopLine: "Hey, My Dear",
+  headingLead: "Sweetheart",
+  headingName: "Pakhi",
   headingTail: "...",
   supporting:
     "I made a little universe just for you. Are you ready to discover it?",
@@ -79,13 +82,13 @@ export const BOUQUET = {
     "Kyunki aaj hi ke din chaand sa ek chehra is duniya mein aaya tha,",
     "Jiske hone se meri har dua ko ek khoobsurat matlab mila tha.",
     "Aur tumhari khoobsurati ka kya hi kehna,",
-    "Tumhe dekhoon toh bas dekhta hi rehna.",
+    "Ek baar dekhoon toh bas dekhta hi rehna.",
     "Tumhari muskurahat mein ek alag sa sukoon hai,",
     "Jaise meri har khushi ka pata sirf tumse hi shuru hai.",
     "Tumhari aankhon mein ek alag si gehraai hai,",
-    "Tumhari har ada mein jaise khuda ki likhi khoobsurati samaayi hai.",
+    "Tumhari har ada mein jaise khuda ki banai khoobsurati samaayi hai.",
     "Sach kahun toh chaand se tumhari misaal kya doon,",
-    "Chaand ko bhi dekhoon toh tumhara khayal aata hai.",
+    "Chaand ko dekhoon toh bhi tumhara hi khayal aata hai.",
   ],
   signature: "With love, Yousuf",
   button: "Accept These Flowers? 🌹",
@@ -112,10 +115,10 @@ export const MEMORIES = {
 // SCREEN 06 — Ten Notes, Each With Its Own Flower ---------------------------
 // Five Roman Urdu notes, then five Banglish ones — kept exactly as written.
 export const REASONS = {
-  eyebrow: "PETAL BY PETAL",
+  eyebrow: "A GARDEN, JUST FOR YOU",
   heading: "10 Little Things I Adore About You",
-  hint: "touch the garden and a flower will bloom",
-  counter: "flowers bloomed",
+  hint: "tap a flower and its note will open",
+  counter: "notes opened",
   items: [
     {
       lang: "Roman Urdu",
@@ -223,6 +226,6 @@ export const SCREEN_TITLES = [
   "A Letter From My Heart",
   "A Bouquet For Her",
   "Our Little Memories",
-  "Why You Are Special",
+  "A Garden of Little Notes",
   "The Final Surprise",
 ];

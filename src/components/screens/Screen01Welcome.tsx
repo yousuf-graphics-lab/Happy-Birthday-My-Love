@@ -2,10 +2,11 @@
 
 // ---------------------------------------------------------------------------
 // SCREEN 01 — THE MAGICAL WELCOME
-// A midnight envelope: gold-hairline paper, a folded flap, a pressed wax seal
-// and a card addressed to her waiting inside. Opening it breaks the seal,
-// lifts the flap, slides the card out, releases golden light and starts the
-// music before carrying her inside.
+// A midnight room, one ivory invitation: warm paper, a gold hairline frame,
+// a rose-silk lining, a pressed flower at the corner and a wax seal with a
+// heart pressed into it. Opening it breaks the seal, lifts the flap, slides
+// the card out, releases golden light and starts the music before carrying
+// her inside.
 // ---------------------------------------------------------------------------
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -47,9 +48,9 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
       <motion.div
         aria-hidden="true"
         initial={{ opacity: 0.35, scale: 0.9 }}
-        animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.95, 1.05, 0.95] }}
+        animate={{ opacity: [0.3, 0.55, 0.3], scale: [0.94, 1.06, 0.94] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose/20 blur-[110px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[440px] w-[440px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose/20 blur-[110px]"
       />
 
       {/* eyebrow */}
@@ -67,30 +68,35 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
         initial={{ opacity: 0, y: 22 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.4, ease: EASE }}
-        className="mt-6 font-display text-[2.7rem] leading-[1.08] tracking-tight text-soft sm:text-6xl"
+        className="mt-6 font-display text-[1.9rem] leading-[1.14] tracking-tight text-soft sm:text-[2.9rem] md:text-[3.4rem]"
       >
-        <span className="text-soft/85">{WELCOME.headingLead} </span>
-        <span className="relative inline-block">
-          <span className="text-gradient-shimmer italic">{WELCOME.headingName}</span>
-          {/* soft underline flourish */}
-          <motion.svg
-            viewBox="0 0 200 18"
-            className="absolute -bottom-2 left-0 h-3 w-full text-champagne/70"
-            fill="none"
-            aria-hidden="true"
-          >
-            <motion.path
-              d="M3 12c40-6 92-8 132-4 22 2 40 3 62-1"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: 1.2, duration: 1.4, ease: "easeInOut" }}
-            />
-          </motion.svg>
+        <span className="block text-[1.35rem] font-normal tracking-[0.18em] text-soft/60 sm:text-[1.7rem]">
+          {WELCOME.headingTopLine}
         </span>
-        <span className="text-soft/85">{WELCOME.headingTail}</span>
+        <span className="mt-2 block text-soft/90">
+          {WELCOME.headingLead}{" "}
+          <span className="relative inline-block">
+            <span className="text-gradient-shimmer italic">{WELCOME.headingName}</span>
+            {/* soft underline flourish */}
+            <motion.svg
+              viewBox="0 0 200 18"
+              className="absolute -bottom-2 left-0 h-3 w-full text-champagne/70"
+              fill="none"
+              aria-hidden="true"
+            >
+              <motion.path
+                d="M3 12c40-6 92-8 132-4 22 2 40 3 62-1"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 1.2, duration: 1.4, ease: "easeInOut" }}
+              />
+            </motion.svg>
+          </span>
+          {WELCOME.headingTail}
+        </span>
       </motion.h1>
 
       <motion.p
@@ -113,19 +119,19 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
         transition={{ duration: 1.2, delay: 1, ease: EASE }}
         whileHover={phase === "closed" ? { scale: 1.03, y: -4 } : undefined}
         whileTap={phase === "closed" ? { scale: 0.98 } : undefined}
-        className="relative mt-12 flex h-[280px] w-[260px] cursor-pointer items-end justify-center bg-transparent sm:h-[310px] sm:w-[300px] disabled:cursor-default"
+        className="relative mt-12 flex h-[300px] w-[300px] cursor-pointer items-center justify-center bg-transparent sm:h-[330px] sm:w-[340px] disabled:cursor-default"
       >
         {/* sparkle dust */}
         {[
-          { l: "-6%", t: "18%", d: 0, s: 12 },
-          { l: "96%", t: "30%", d: 1.2, s: 10 },
-          { l: "4%", t: "72%", d: 2.1, s: 9 },
-          { l: "88%", t: "80%", d: 0.6, s: 13 },
+          { l: "-2%", t: "20%", d: 0, s: 12 },
+          { l: "94%", t: "34%", d: 1.2, s: 10 },
+          { l: "6%", t: "76%", d: 2.1, s: 9 },
+          { l: "88%", t: "84%", d: 0.6, s: 13 },
         ].map((sp, i) => (
           <motion.span
             key={i}
             aria-hidden="true"
-            className="pointer-events-none absolute"
+            className="pointer-events-none absolute z-50"
             style={{ left: sp.l, top: sp.t, fontSize: sp.s }}
             animate={{ opacity: [0.15, 0.9, 0.15], scale: [0.8, 1.2, 0.8] }}
             transition={{ duration: 3.6, delay: sp.d, repeat: Infinity, ease: "easeInOut" }}
@@ -134,32 +140,68 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
           </motion.span>
         ))}
 
-        {/* envelope stack */}
-        <div className="relative h-[196px] w-[248px] sm:w-[282px]" style={{ perspective: "1200px" }}>
-          {/* body */}
-          <div className="absolute inset-0 overflow-hidden rounded-[10px] bg-gradient-to-br from-[#2a1a44] via-[#20123a] to-[#170d2a] shadow-[0_30px_70px_-25px_rgba(0,0,0,0.95)] ring-1 ring-champagne/20">
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.07]" />
+        {/* envelope stack — floats very gently */}
+        <motion.div
+          className="relative h-[204px] w-[268px] sm:h-[228px] sm:w-[300px]"
+          style={{ perspective: "1400px" }}
+          animate={phase === "closed" ? { y: [0, -5, 0] } : { y: 0 }}
+          transition={
+            phase === "closed"
+              ? { duration: 5.5, repeat: Infinity, ease: "easeInOut" }
+              : { duration: 0.6 }
+          }
+        >
+          {/* shadow pool */}
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-5 left-1/2 h-7 w-[88%] -translate-x-1/2 rounded-[50%] bg-black/70 blur-xl"
+          />
+
+          {/* ---------------- back panel — warm ivory invitation ---------------- */}
+          <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-[linear-gradient(158deg,#fdf8ee_0%,#f8ecd8_44%,#efdcc0_100%)] shadow-[0_36px_70px_-24px_rgba(0,0,0,0.95)] ring-1 ring-[#c9a76c]/45">
+            {/* pressed damask */}
+            <svg className="absolute inset-0 h-full w-full opacity-[0.12]" aria-hidden="true">
+              <defs>
+                <pattern id="envDamask" width="28" height="28" patternUnits="userSpaceOnUse">
+                  <path
+                    d="M14 4 C18.5 8.5 18.5 14.5 14 19 C9.5 14.5 9.5 8.5 14 4 Z"
+                    fill="#a87f42"
+                  />
+                  <circle cx="1.5" cy="1.5" r="1.5" fill="#a87f42" />
+                  <circle cx="26.5" cy="26.5" r="1.5" fill="#a87f42" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#envDamask)" />
+            </svg>
+
+            {/* rose silk lining, glowing out of the mouth */}
+            <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,#ff9dc0_0%,#ffc9dc_38%,rgba(255,233,240,0)_100%)]" />
+            <div className="absolute inset-x-0 top-0 h-20 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.55),transparent_65%)]" />
+
+            {/* double gold frame */}
+            <div className="pointer-events-none absolute inset-[9px] rounded-[8px] border border-[#b98f4b]/40" />
+            <div className="pointer-events-none absolute inset-[13px] rounded-[7px] border border-[#b98f4b]/18" />
           </div>
 
-          {/* the card inside — rises out once the flap is open */}
+          {/* ---------------- the card inside ---------------- */}
           <motion.div
             initial={false}
             animate={
               isOpen
-                ? { y: -108, scale: 1.04, opacity: 1 }
+                ? { y: -116, scale: 1.05, opacity: 1 }
                 : isOpening
-                ? { y: -46, scale: 1, opacity: 1 }
-                : { y: 18, opacity: 0 }
+                ? { y: -50, scale: 1, opacity: 1 }
+                : { y: 20, opacity: 0 }
             }
             transition={{ duration: 0.9, ease: EASE }}
-            className="absolute bottom-6 left-1/2 z-10 w-[196px] -translate-x-1/2 sm:w-[224px]"
+            className="absolute bottom-7 left-1/2 z-10 w-[204px] -translate-x-1/2 sm:w-[232px]"
           >
-            <div className="relative overflow-hidden rounded-[8px] border border-champagne/40 bg-gradient-to-br from-[#fffaf3] via-[#fbeee2] to-[#f6dfd0] px-5 py-5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
-              {/* gold inner rule */}
-              <div className="pointer-events-none absolute inset-[6px] rounded-[5px] border border-champagne/60" />
+            <div className="relative overflow-hidden rounded-[9px] border border-[#c9a76c]/45 bg-[linear-gradient(160deg,#fffdf8_0%,#fdf2e4_60%,#f9e6d6_100%)] px-5 py-5 shadow-[0_20px_44px_-16px_rgba(0,0,0,0.85)]">
+              <div className="pointer-events-none absolute inset-[6px] rounded-[6px] border border-[#c9a76c]/55" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.9),transparent_60%)]" />
               <div className="relative flex flex-col items-center">
                 <Heart className="h-4 w-4 fill-rose text-rose" strokeWidth={1.4} />
-                <p className="mt-2 font-hand text-[1.6rem] leading-none text-[#4a2a3f]">
+                <p className="mt-2 font-hand text-[1.55rem] leading-none text-[#4a2a3f]">
                   {WELCOME.cardTo}
                 </p>
                 <div className="my-2 flex w-full items-center gap-2">
@@ -177,34 +219,58 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
             </div>
           </motion.div>
 
-          {/* pocket front — three folds */}
+          {/* ---------------- pocket front — three folds ---------------- */}
           <svg
-            viewBox="0 0 280 196"
+            viewBox="0 0 300 228"
             className="absolute inset-0 z-20 h-full w-full"
             aria-hidden="true"
           >
             <defs>
               <linearGradient id="pocketLeft" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#3a2259" />
-                <stop offset="100%" stopColor="#26163f" />
+                <stop offset="0%" stopColor="#fdf6e8" />
+                <stop offset="100%" stopColor="#f0e0c6" />
               </linearGradient>
               <linearGradient id="pocketRight" x1="1" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#402659" />
-                <stop offset="100%" stopColor="#291841" />
+                <stop offset="0%" stopColor="#fbf2e2" />
+                <stop offset="100%" stopColor="#eadbbd" />
               </linearGradient>
-              <linearGradient id="pocketBottom" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#452c63" />
-                <stop offset="100%" stopColor="#2b1a45" />
+              <linearGradient id="pocketBottom" x1="0" y1="0" x2="0.2" y2="1">
+                <stop offset="0%" stopColor="#fff9ef" />
+                <stop offset="100%" stopColor="#f3e4ca" />
               </linearGradient>
             </defs>
-            <path d="M0 4 L140 104 L0 192 Z" fill="url(#pocketLeft)" stroke="rgba(255,217,160,0.18)" strokeWidth="1" />
-            <path d="M280 4 L140 104 L280 192 Z" fill="url(#pocketRight)" stroke="rgba(255,217,160,0.18)" strokeWidth="1" />
-            <path d="M2 192 L140 104 L278 192 Z" fill="url(#pocketBottom)" stroke="rgba(255,217,160,0.25)" strokeWidth="1" />
-            <path d="M0 4 L140 104" stroke="rgba(255,217,160,0.28)" strokeWidth="1" fill="none" />
-            <path d="M280 4 L140 104" stroke="rgba(255,217,160,0.28)" strokeWidth="1" fill="none" />
+            <path
+              d="M0 4 L150 112 L0 226 Z"
+              fill="url(#pocketLeft)"
+              stroke="rgba(176,138,78,0.4)"
+              strokeWidth="1"
+            />
+            <path
+              d="M300 4 L150 112 L300 226 Z"
+              fill="url(#pocketRight)"
+              stroke="rgba(176,138,78,0.4)"
+              strokeWidth="1"
+            />
+            <path
+              d="M2 226 L150 112 L298 226 Z"
+              fill="url(#pocketBottom)"
+              stroke="rgba(176,138,78,0.5)"
+              strokeWidth="1"
+            />
+            {/* fold highlights */}
+            <path d="M0 4 L150 112" stroke="rgba(255,255,255,0.85)" strokeWidth="1.2" fill="none" />
+            <path d="M300 4 L150 112" stroke="rgba(255,255,255,0.85)" strokeWidth="1.2" fill="none" />
+            {/* scalloped gold band along the bottom fold */}
+            <path
+              d="M40 208 Q56 196 72 208 Q88 220 104 208 Q120 196 136 208 Q152 220 168 208 Q184 196 200 208 Q216 220 232 208 Q248 196 264 208"
+              fill="none"
+              stroke="rgba(184,140,76,0.35)"
+              strokeWidth="1.1"
+              strokeLinecap="round"
+            />
           </svg>
 
-          {/* flap — folds open */}
+          {/* ---------------- flap — folds open, rose lining behind ---------------- */}
           <motion.div
             initial={false}
             animate={{ rotateX: isOpening ? -168 : 0 }}
@@ -213,23 +279,121 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
               transformOrigin: "top center",
               transformStyle: "preserve-3d",
               zIndex: isOpening ? 5 : 30,
-              backfaceVisibility: "hidden",
             }}
-            className="absolute inset-x-0 top-0 h-[104px]"
+            className="absolute inset-x-0 top-0 h-[118px]"
           >
-            <svg viewBox="0 0 280 104" className="h-full w-full drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]" aria-hidden="true">
-              <defs>
-                <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4a2e6b" />
-                  <stop offset="100%" stopColor="#331f4d" />
-                </linearGradient>
-              </defs>
-              <path d="M2 2 L278 2 L140 100 Z" fill="url(#flapGrad)" stroke="rgba(255,217,160,0.28)" strokeWidth="1.2" />
-              <path d="M14 8 L140 84 L266 8" fill="none" stroke="rgba(255,217,160,0.12)" strokeWidth="1" />
-            </svg>
+            {/* outer face */}
+            <div
+              className="absolute inset-0"
+              style={{ backfaceVisibility: "hidden" }}
+            >
+              <svg
+                viewBox="0 0 300 118"
+                className="h-full w-full drop-shadow-[0_10px_18px_rgba(60,30,10,0.4)]"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="flapGrad" x1="0" y1="0" x2="0.4" y2="1">
+                    <stop offset="0%" stopColor="#fdf7ea" />
+                    <stop offset="60%" stopColor="#f7e9d2" />
+                    <stop offset="100%" stopColor="#efdcc0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M2 2 L298 2 L150 114 Z"
+                  fill="url(#flapGrad)"
+                  stroke="rgba(184,140,76,0.5)"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M16 9 L150 96 L284 9"
+                  fill="none"
+                  stroke="rgba(184,140,76,0.28)"
+                  strokeWidth="1"
+                />
+                <path
+                  d="M30 15 L150 86 L270 15"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.7)"
+                  strokeWidth="1"
+                />
+              </svg>
+            </div>
+
+            {/* inner face — rose silk lining */}
+            <div
+              className="absolute inset-0"
+              style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+            >
+              <svg viewBox="0 0 300 118" className="h-full w-full" aria-hidden="true">
+                <defs>
+                  <linearGradient id="flapLining" x1="0" y1="0" x2="0.3" y2="1">
+                    <stop offset="0%" stopColor="#ffd7e4" />
+                    <stop offset="55%" stopColor="#ffb0cb" />
+                    <stop offset="100%" stopColor="#f07fa6" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M2 2 L298 2 L150 114 Z"
+                  fill="url(#flapLining)"
+                  stroke="rgba(255,255,255,0.55)"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M20 10 L150 92 L280 10"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.4)"
+                  strokeWidth="1"
+                />
+              </svg>
+            </div>
           </motion.div>
 
-          {/* wax seal */}
+          {/* ---------------- pressed sprig, bottom-left ---------------- */}
+          <svg
+            viewBox="0 0 64 64"
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-2 -left-3 z-40 h-[62px] w-[62px] -rotate-12 opacity-90 sm:h-[70px] sm:w-[70px]"
+          >
+            <path
+              d="M30 58 C30 44 28 34 22 26"
+              stroke="#6f8f6a"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+            <ellipse cx="24" cy="38" rx="7" ry="3" fill="#8aa984" opacity="0.85" transform="rotate(-28 24 38)" />
+            <ellipse cx="33" cy="46" rx="7" ry="3" fill="#7d9c77" opacity="0.85" transform="rotate(24 33 46)" />
+            <ellipse cx="19" cy="30" rx="6" ry="2.6" fill="#9ab894" opacity="0.8" transform="rotate(-48 19 30)" />
+            <g opacity="0.95">
+              <circle cx="21" cy="22" r="4.2" fill="#ffd7e4" />
+              <circle cx="27" cy="17" r="3.4" fill="#ffe9f0" />
+              <circle cx="15" cy="17" r="3" fill="#ffc2d8" />
+              <circle cx="21" cy="22" r="1.3" fill="#e8a33d" />
+            </g>
+          </svg>
+
+          {/* ---------------- pressed sprig, bottom-right ---------------- */}
+          <svg
+            viewBox="0 0 64 64"
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-3 -right-3 z-40 h-[54px] w-[54px] rotate-12 opacity-80 sm:h-[62px] sm:w-[62px]"
+          >
+            <path
+              d="M34 58 C34 46 37 36 44 28"
+              stroke="#6f8f6a"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+            <ellipse cx="39" cy="40" rx="6.5" ry="2.8" fill="#8aa984" opacity="0.85" transform="rotate(28 39 40)" />
+            <ellipse cx="31" cy="47" rx="6" ry="2.6" fill="#7d9c77" opacity="0.8" transform="rotate(-24 31 47)" />
+            <circle cx="45" cy="24" r="3.6" fill="#ffe9c4" />
+            <circle cx="50" cy="29" r="2.8" fill="#fff7fb" />
+            <circle cx="45" cy="24" r="1.1" fill="#e8a33d" />
+          </svg>
+
+          {/* ---------------- wax seal ---------------- */}
           <AnimatePresence>
             {!isOpening && (
               <motion.div
@@ -238,16 +402,28 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
                 animate={{ scale: 1, rotate: 0, opacity: 1 }}
                 exit={{ scale: 0.2, rotate: 46, opacity: 0, y: 8 }}
                 transition={{ type: "spring", stiffness: 190, damping: 16 }}
-                className="absolute left-1/2 top-[74px] z-40 flex h-[54px] w-[54px] -translate-x-1/2 items-center justify-center rounded-full sm:h-[58px] sm:w-[58px]"
+                className="absolute left-1/2 top-[80px] z-40 flex h-[58px] w-[58px] -translate-x-1/2 items-center justify-center rounded-full sm:h-[62px] sm:w-[62px]"
               >
-                <span className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ff6fa3] via-[#e33f7b] to-[#9d3ec9] shadow-[0_8px_20px_-6px_rgba(0,0,0,0.9),inset_0_2px_6px_rgba(255,255,255,0.4)]" />
-                <span className="absolute inset-[5px] rounded-full border border-white/25" />
-                <span className="absolute inset-[10px] rounded-full border border-white/15" />
-                <span className="relative font-display text-lg font-bold text-soft/95 drop-shadow-sm sm:text-xl">
-                  S
-                </span>
+                {/* gold rim */}
+                <span className="absolute inset-0 rounded-full bg-[conic-gradient(from_210deg,#f6d79a,#c99a4d,#ffe9c0,#b8863c,#f6d79a)] shadow-[0_10px_22px_-6px_rgba(0,0,0,0.9)]" />
+                {/* wax body */}
+                <span className="absolute inset-[4px] rounded-full bg-[radial-gradient(circle_at_34%_28%,#ff7fa8_0%,#e0396f_45%,#9e2350_100%)] shadow-[inset_0_2px_7px_rgba(255,255,255,0.4),inset_0_-3px_8px_rgba(80,0,25,0.55)]" />
+                {/* pressed heart */}
+                <Heart
+                  className="relative h-[22px] w-[22px] fill-[#7d1038]/70 text-[#ffd9e6]/70 drop-shadow-[0_1px_0_rgba(255,255,255,0.35)] sm:h-6 sm:w-6"
+                  strokeWidth={1.1}
+                />
                 {/* highlight */}
-                <span className="absolute left-3 top-2 h-2 w-4 -rotate-[20deg] rounded-full bg-white/35 blur-[2px]" />
+                <span className="absolute left-3 top-2 h-2 w-4 -rotate-[20deg] rounded-full bg-white/40 blur-[2px]" />
+                {/* tiny orbit sparkles */}
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute -right-1 -top-1 text-[9px] text-champagne"
+                  animate={{ opacity: [0.2, 1, 0.2], scale: [0.7, 1.15, 0.7] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  ✦
+                </motion.span>
               </motion.div>
             )}
           </AnimatePresence>
@@ -257,14 +433,14 @@ export default function Screen01Welcome({ onContinue }: { onContinue: () => void
             {isOpening && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: [0, 0.9, 0.55], scale: [0.6, 1.25, 1.1] }}
+                animate={{ opacity: [0, 0.9, 0.55], scale: [0.6, 1.3, 1.15] }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1.4 }}
-                className="pointer-events-none absolute inset-x-0 top-0 z-30 h-24 bg-[radial-gradient(ellipse_at_center,rgba(255,217,160,0.55),transparent_70%)] blur-md"
+                className="pointer-events-none absolute inset-x-0 top-0 z-30 h-28 bg-[radial-gradient(ellipse_at_center,rgba(255,220,170,0.6),transparent_70%)] blur-md"
               />
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </motion.button>
 
       {/* ------------------------------- button ------------------------------- */}
