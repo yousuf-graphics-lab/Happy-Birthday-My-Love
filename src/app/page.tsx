@@ -11,7 +11,6 @@ import { useCallback, useState } from "react";
 import Atmosphere from "@/components/Atmosphere";
 import { AudioProvider, useAudio } from "@/components/AudioProvider";
 import JourneyNav from "@/components/JourneyNav";
-import PointerGlow from "@/components/PointerGlow";
 import Screen01Welcome from "@/components/screens/Screen01Welcome";
 import Screen02Reveal from "@/components/screens/Screen02Reveal";
 import Screen03Letter from "@/components/screens/Screen03Letter";
@@ -42,7 +41,6 @@ function Experience() {
   return (
     <div className="midnight-bg relative min-h-screen w-full overflow-hidden">
       <Atmosphere />
-      <PointerGlow />
 
       <main className="relative z-20">
         <AnimatePresence mode="wait">
