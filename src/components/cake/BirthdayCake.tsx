@@ -1,11 +1,14 @@
 "use client";
 
 // ---------------------------------------------------------------------------
-// BirthdayCake — a three-layer CSS cake with frosting, roses, gold details
-// and glowing candles. `litCandles` controls which flames burn.
+// BirthdayCake — a three-tier CSS cake: striped candles with swaying flames,
+// dripping icing, gold trim, sugar pearls and roses. `litCandles` controls
+// which flames burn, `celebrating` adds sparkle once the wish is made.
 // ---------------------------------------------------------------------------
 
 import { AnimatePresence, motion } from "framer-motion";
+
+const PEARLS = [12, 26, 40, 54, 68, 82, 96];
 
 export default function BirthdayCake({
   litCandles,
@@ -16,119 +19,225 @@ export default function BirthdayCake({
 }) {
   return (
     <div className="relative" style={{ perspective: "900px" }}>
-      {/* glow under the cake */}
-      <div className="absolute left-1/2 top-[58%] h-16 w-72 -translate-x-1/2 rounded-full bg-rose/30 blur-3xl" />
+      {/* warm pool of light under the cake */}
+      <div className="animate-cake-glow absolute bottom-2 left-1/2 h-16 w-64 -translate-x-1/2 rounded-full bg-rose/30 blur-3xl" />
+      <div className="absolute bottom-0 left-1/2 h-6 w-72 -translate-x-1/2 rounded-full bg-black/50 blur-xl" />
 
-      <div className="relative mx-auto h-[230px] w-[210px] sm:h-[280px] sm:w-[260px]">
-        {/* ---------- bottom layer ---------- */}
-        <div className="absolute bottom-0 left-1/2 h-[88px] w-[200px] -translate-x-1/2 rounded-2xl bg-gradient-to-b from-[#3d2357] to-[#2a1540] shadow-[0_25px_60px_-20px_rgba(0,0,0,0.9)] sm:w-[250px]">
-          {/* frosting top */}
-          <div className="absolute -top-3 left-0 right-0 h-10 rounded-b-[2rem] bg-gradient-to-b from-rose-100 to-rose-200" />
-          {/* drips */}
-          {[10, 34, 58, 82, 106, 130, 154, 178].map((left, i) => (
-            <div
+      <div className="relative mx-auto h-[300px] w-[220px] sm:h-[352px] sm:w-[270px]">
+        {/* ---------------- plate ---------------- */}
+        <div className="absolute -bottom-1 left-1/2 h-4 w-[220px] -translate-x-1/2 rounded-full bg-gradient-to-b from-champagne/70 via-amber-200/40 to-transparent sm:w-[270px]" />
+        <div className="absolute -bottom-2 left-1/2 h-3 w-[180px] -translate-x-1/2 rounded-full bg-black/40 blur-md sm:w-[220px]" />
+
+        {/* ---------------- bottom tier ---------------- */}
+        <div className="absolute bottom-1 left-1/2 h-[92px] w-[204px] -translate-x-1/2 overflow-hidden rounded-[18px] bg-gradient-to-b from-[#41265c] via-[#331c4c] to-[#231238] shadow-[0_28px_60px_-24px_rgba(0,0,0,0.95),inset_0_-18px_30px_-20px_rgba(0,0,0,0.9)] sm:h-[104px] sm:w-[252px]">
+          {/* soft light spill from the candles */}
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-amber-200/25 to-transparent" />
+          {/* sprinkles */}
+          {[
+            { l: 14, t: 58, c: "#ffd9a0", r: 24 },
+            { l: 40, t: 74, c: "#ff8ac1", r: -18 },
+            { l: 78, t: 62, c: "#c4b5fd", r: 42 },
+            { l: 120, t: 78, c: "#ffd9a0", r: -32 },
+            { l: 158, t: 60, c: "#ff8ac1", r: 12 },
+            { l: 186, t: 76, c: "#c4b5fd", r: 64 },
+          ].map((sp, i) => (
+            <span
               key={i}
-              className="absolute -top-3 rounded-b-full bg-gradient-to-b from-rose-100 to-rose-200"
-              style={{ left: `${left}px`, width: `${14 + (i % 3) * 6}px`, height: `${18 + (i % 2) * 12}px` }}
+              className="absolute block h-[3px] w-[9px] rounded-full opacity-80"
+              style={{
+                left: sp.l,
+                top: sp.t,
+                background: sp.c,
+                transform: `rotate(${sp.r}deg)`,
+              }}
             />
           ))}
           {/* gold band */}
-          <div className="absolute bottom-8 left-4 right-4 h-2 rounded-full bg-gradient-to-r from-champagne via-amber-200 to-champagne opacity-80" />
-          {/* roses */}
-          <Rose className="left-6 top-10" size={26} />
-          <Rose className="right-6 top-10" size={26} />
+          <div className="absolute bottom-9 left-4 right-4 h-[6px] rounded-full bg-gradient-to-r from-champagne/40 via-amber-200 to-champagne/40 opacity-90" />
+          {/* pearls */}
+          <div className="absolute bottom-[52px] left-5 right-5 flex justify-between">
+            {PEARLS.map((p) => (
+              <span
+                key={p}
+                className="h-1.5 w-1.5 rounded-full bg-soft/80 shadow-[0_0_6px_rgba(255,247,251,0.7)]"
+              />
+            ))}
+          </div>
+          <Rose className="left-4 top-[26px]" size={24} />
+          <Rose className="right-4 top-[26px]" size={24} />
         </div>
 
-        {/* ---------- middle layer ---------- */}
-        <div className="absolute bottom-[76px] left-1/2 h-[76px] w-[160px] -translate-x-1/2 rounded-2xl bg-gradient-to-b from-[#4a2a68] to-[#321c4e] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] sm:w-[200px]">
-          <div className="absolute -top-3 left-0 right-0 h-9 rounded-b-[2rem] bg-gradient-to-b from-fuchsia-100 to-fuchsia-200" />
-          {[14, 38, 62, 86, 110, 134].map((left, i) => (
-            <div
-              key={i}
-              className="absolute -top-3 rounded-b-full bg-gradient-to-b from-fuchsia-100 to-fuchsia-200"
-              style={{ left: `${left}px`, width: `${12 + (i % 3) * 5}px`, height: `${14 + (i % 2) * 10}px` }}
-            />
-          ))}
-          <div className="absolute bottom-7 left-4 right-4 h-2 rounded-full bg-gradient-to-r from-champagne via-amber-200 to-champagne opacity-80" />
-          <Rose className="left-5 top-8" size={22} />
-          <Rose className="right-5 top-8" size={22} />
+        {/* icing on the bottom tier — drips scale with the tier */}
+        <div className="absolute bottom-[88px] left-1/2 w-[210px] -translate-x-1/2 sm:bottom-[100px] sm:w-[258px]">
+          <div className="h-6 rounded-t-[14px] rounded-b-[10px] bg-gradient-to-b from-rose-50 via-rose-100 to-rose-200 shadow-[0_6px_14px_-6px_rgba(0,0,0,0.6)]" />
+          <div className="absolute -top-2 left-1 right-1 flex justify-between">
+            {[16, 12, 20, 14, 18, 13, 17].map((h, i) => (
+              <span
+                key={i}
+                className="rounded-b-full bg-gradient-to-b from-rose-100 to-rose-200 shadow-[0_3px_5px_-3px_rgba(0,0,0,0.7)]"
+                style={{ width: 14 + (i % 3) * 4, height: h + 22 }}
+              />
+            ))}
+          </div>
+          <div className="absolute inset-x-0 top-0 h-[2px] rounded-full bg-white/70" />
         </div>
 
-        {/* ---------- top layer ---------- */}
-        <div className="absolute bottom-[138px] left-1/2 h-[64px] w-[120px] -translate-x-1/2 rounded-2xl bg-gradient-to-b from-[#5b3480] to-[#3e2358] shadow-[0_18px_45px_-18px_rgba(0,0,0,0.9)] sm:bottom-[160px] sm:w-[150px]">
-          <div className="absolute -top-3 left-0 right-0 h-8 rounded-b-[2rem] bg-gradient-to-b from-violet-100 to-violet-200" />
-          {[12, 36, 60, 84, 108].map((left, i) => (
-            <div
-              key={i}
-              className="absolute -top-3 rounded-b-full bg-gradient-to-b from-violet-100 to-violet-200"
-              style={{ left: `${left}px`, width: `${10 + (i % 3) * 5}px`, height: `${12 + (i % 2) * 8}px` }}
-            />
-          ))}
-          <div className="absolute bottom-6 left-3 right-3 h-2 rounded-full bg-gradient-to-r from-champagne via-amber-200 to-champagne opacity-80" />
-          {/* top rose */}
-          <Rose className="left-1/2 top-4" size={24} />
+        {/* ---------------- middle tier ---------------- */}
+        <div className="absolute bottom-[104px] left-1/2 h-[74px] w-[158px] -translate-x-1/2 overflow-hidden rounded-[16px] bg-gradient-to-b from-[#4c2c69] via-[#3b2054] to-[#2a153f] shadow-[0_20px_46px_-22px_rgba(0,0,0,0.95),inset_0_-14px_26px_-18px_rgba(0,0,0,0.9)] sm:bottom-[120px] sm:w-[196px]">
+          <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-amber-200/20 to-transparent" />
+          <div className="absolute bottom-7 left-3 right-3 h-[5px] rounded-full bg-gradient-to-r from-champagne/40 via-amber-200 to-champagne/40 opacity-90" />
+          <Rose className="left-3 top-[22px]" size={20} />
+          <Rose className="right-3 top-[22px]" size={20} />
         </div>
 
-        {/* ---------- candles ---------- */}
-        <div className="absolute bottom-[176px] left-1/2 flex w-[120px] -translate-x-1/2 items-end justify-between sm:bottom-[212px] sm:w-[150px]">
+        {/* icing on the middle tier */}
+        <div className="absolute bottom-[172px] left-1/2 w-[164px] -translate-x-1/2 sm:bottom-[188px] sm:w-[202px]">
+          <div className="h-5 rounded-t-[12px] rounded-b-[9px] bg-gradient-to-b from-fuchsia-50 via-fuchsia-100 to-fuchsia-200 shadow-[0_6px_14px_-6px_rgba(0,0,0,0.6)]" />
+          <div className="absolute -top-2 left-1 right-1 flex justify-between">
+            {[14, 10, 17, 12, 15, 11].map((h, i) => (
+              <span
+                key={i}
+                className="rounded-b-full bg-gradient-to-b from-fuchsia-100 to-fuchsia-200 shadow-[0_3px_5px_-3px_rgba(0,0,0,0.7)]"
+                style={{ width: 12 + (i % 3) * 4, height: h + 18 }}
+              />
+            ))}
+          </div>
+          <div className="absolute inset-x-0 top-0 h-[2px] rounded-full bg-white/70" />
+        </div>
+
+        {/* ---------------- top tier ---------------- */}
+        <div className="absolute bottom-[188px] left-1/2 h-[58px] w-[118px] -translate-x-1/2 overflow-hidden rounded-[14px] bg-gradient-to-b from-[#5c3583] via-[#452763] to-[#311a4a] shadow-[0_16px_38px_-18px_rgba(0,0,0,0.95),inset_0_-12px_22px_-16px_rgba(0,0,0,0.9)] sm:bottom-[208px] sm:w-[146px]">
+          <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-amber-200/22 to-transparent" />
+          <div className="absolute bottom-5 left-3 right-3 h-[5px] rounded-full bg-gradient-to-r from-champagne/40 via-amber-200 to-champagne/40 opacity-90" />
+        </div>
+
+        {/* icing on the top tier */}
+        <div className="absolute bottom-[240px] left-1/2 w-[124px] -translate-x-1/2 sm:bottom-[260px] sm:w-[152px]">
+          <div className="h-4 rounded-t-[10px] rounded-b-[8px] bg-gradient-to-b from-violet-50 via-violet-100 to-violet-200 shadow-[0_5px_12px_-5px_rgba(0,0,0,0.6)]" />
+          <div className="absolute -top-1.5 left-1 right-1 flex justify-between">
+            {[12, 9, 14, 10, 13].map((h, i) => (
+              <span
+                key={i}
+                className="rounded-b-full bg-gradient-to-b from-violet-100 to-violet-200 shadow-[0_3px_5px_-3px_rgba(0,0,0,0.7)]"
+                style={{ width: 11 + (i % 2) * 3, height: h + 14 }}
+              />
+            ))}
+          </div>
+          <div className="absolute inset-x-0 top-0 h-[2px] rounded-full bg-white/70" />
+        </div>
+
+        {/* ---------------- candles ---------------- */}
+        <div className="absolute bottom-[248px] left-1/2 flex w-[128px] -translate-x-1/2 items-end justify-between sm:bottom-[268px] sm:w-[156px]">
           {litCandles.map((lit, i) => (
-            <div key={i} className="flex w-5 flex-col items-center sm:w-6">
-              <AnimatePresence>
-                {lit && (
-                  <motion.div
-                    initial={{ scale: 0.4, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.2, opacity: 0, y: 10 }}
-                    transition={{ duration: 0.3 }}
-                    className="flame absolute -bottom-[38px]"
-                  >
-                    {/* flame glow */}
-                    <div className="absolute left-1/2 top-1 h-10 w-10 -translate-x-1/2 rounded-full bg-amber-300/40 blur-2xl" />
-                    <svg viewBox="0 0 24 36" className="relative h-[38px] w-5">
-                      <path
-                        d="M12 0C12 0 4 9 4 18a8 8 0 0 0 16 0C20 9 12 0 12 0z"
-                        fill="url(#flameGrad)"
-                      />
-                      <defs>
-                        <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#fff7c2" />
-                          <stop offset="45%" stopColor="#ffd166" />
-                          <stop offset="100%" stopColor="#ff7b54" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <div className="h-10 w-full rounded-t-sm bg-gradient-to-b from-champagne/90 to-rose-300/70" />
-              <div className="h-1.5 w-full rounded-b-sm bg-rose-400/60" />
-            </div>
+            <Candle key={i} lit={lit} index={i} />
           ))}
         </div>
 
-        {/* candle plate sparkle when celebrating */}
+        {/* sparkle when the wish is made */}
         <AnimatePresence>
           {celebrating && (
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute -top-10 left-1/2 h-20 w-40 -translate-x-1/2"
+              className="pointer-events-none absolute -top-2 left-1/2 h-24 w-48 -translate-x-1/2"
             >
-              {[0, 1, 2, 3, 4].map((i) => (
+              {[0, 1, 2, 3, 4, 5].map((i) => (
                 <motion.span
                   key={i}
-                  className="absolute left-1/2 text-2xl"
-                  style={{ top: `${i * 8}px`, x: `${(i - 2) * 16}px` }}
-                  animate={{ y: [0, -30, 0], opacity: [0, 1, 0] }}
-                  transition={{ duration: 1.6, delay: i * 0.12, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute left-1/2 text-xl"
+                  style={{ top: `${i * 9}px`, x: `${(i - 2.5) * 18}px` }}
+                  animate={{ y: [0, -34, 0], opacity: [0, 1, 0], scale: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2.2, delay: i * 0.16, repeat: Infinity, ease: "easeOut" }}
                 >
-                  ✨
+                  {i % 2 ? "✨" : "💫"}
                 </motion.span>
               ))}
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+function Candle({ lit, index }: { lit: boolean; index: number }) {
+  // a little height variation keeps the row from feeling machine-made
+  const bodyHeight = [40, 46, 38, 48, 42][index % 5];
+
+  return (
+    <div className="relative flex w-[18px] flex-col items-center sm:w-[22px]">
+      {/* flame + glow */}
+      <AnimatePresence>
+        {lit && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.3, y: -4 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-1/2 -translate-x-1/2"
+            style={{ bottom: bodyHeight + 4 }}
+          >
+            {/* halo */}
+            <div className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-300/35 blur-xl" />
+            <div className="absolute left-1/2 top-2 h-10 w-10 -translate-x-1/2 rounded-full bg-orange-400/25 blur-lg" />
+            {/* flame body */}
+            <div
+              className="animate-flame relative h-[34px] w-[13px] origin-bottom"
+              style={{ animationDelay: `${index * -0.37}s` }}
+            >
+              <svg viewBox="0 0 20 40" className="h-full w-full overflow-visible">
+                <defs>
+                  <radialGradient id={`flameCore-${index}`} cx="50%" cy="70%" r="60%">
+                    <stop offset="0%" stopColor="#fffdf0" />
+                    <stop offset="45%" stopColor="#ffe9a8" />
+                    <stop offset="100%" stopColor="#ffb347" />
+                  </radialGradient>
+                  <linearGradient id={`flameOuter-${index}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ffb347" stopOpacity="0.95" />
+                    <stop offset="55%" stopColor="#ff7b54" stopOpacity="0.85" />
+                    <stop offset="100%" stopColor="#ff4d8d" stopOpacity="0.35" />
+                  </linearGradient>
+                </defs>
+                {/* outer teardrop */}
+                <path
+                  d="M10 1c0 0-7 9.4-7 18.6A7 7 0 0 0 17 19.6C17 10.4 10 1 10 1z"
+                  fill={`url(#flameOuter-${index})`}
+                />
+                {/* inner core */}
+                <ellipse cx="10" cy="24" rx="3.4" ry="6.2" fill={`url(#flameCore-${index})`} />
+              </svg>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* smoke after blowing */}
+      <AnimatePresence>
+        {!lit && (
+          <div
+            className="smoke-wisp absolute left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-soft/40 blur-[3px]"
+            style={{ bottom: bodyHeight + 6 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* wick */}
+      <div className="h-[5px] w-[2px] rounded-full bg-[#2b1b3a]" />
+
+      {/* candle body — striped, with a lit top edge */}
+      <div
+        className="relative w-[9px] overflow-hidden rounded-t-[3px] rounded-b-[2px] shadow-[inset_-2px_0_3px_rgba(0,0,0,0.35)] sm:w-[10px]"
+        style={{
+          height: bodyHeight,
+          backgroundImage:
+            "repeating-linear-gradient(-45deg, #fff7fb 0 4px, #ff8ac1 4px 8px)",
+        }}
+      >
+        <span className="absolute inset-y-0 left-0 w-[3px] bg-white/45" />
+        <span className="absolute inset-x-0 top-0 h-[3px] bg-champagne/80" />
       </div>
     </div>
   );

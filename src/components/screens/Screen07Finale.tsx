@@ -98,21 +98,29 @@ export default function Screen07Finale({ onReplay }: { onReplay: () => void }) {
         {FINALE.heading}
       </motion.h2>
 
-      {/* message lines */}
-      <div className="mt-10 flex max-w-xl flex-col gap-6">
-        <AnimatePresence mode="wait">
-          {FINALE.lines.slice(0, line).map((text, i) => (
-            <motion.p
-              key={i}
-              initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-lg leading-relaxed text-soft/85 sm:text-xl"
-            >
-              {text}
-            </motion.p>
-          ))}
-        </AnimatePresence>
+      {/* message card */}
+      <div className="relative mt-10 w-full max-w-xl">
+        <div className="glass-strong relative overflow-hidden rounded-[26px] px-7 py-7 text-center shadow-[0_30px_80px_-40px_rgba(255,77,141,0.6)] sm:px-10">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/70 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-rose/40 to-transparent" />
+          <div className="flex flex-col gap-5">
+            <AnimatePresence mode="wait">
+              {FINALE.lines.slice(0, line).map((text, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                  className={`leading-relaxed text-soft/85 ${
+                    i === 0 ? "font-display text-xl sm:text-2xl" : "text-base sm:text-lg"
+                  }`}
+                >
+                  {text}
+                </motion.p>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* grand heading + signature */}

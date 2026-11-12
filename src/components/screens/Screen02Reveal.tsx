@@ -9,7 +9,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Mic, MicOff, Sparkles } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import BirthdayCake from "@/components/cake/BirthdayCake";
 import MagicButton from "@/components/ui/MagicButton";
 import { useAudio } from "@/components/AudioProvider";
@@ -69,16 +69,6 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
     blowCandle(firstLit);
   });
 
-  // staggered gradient animation on the name
-  const nameStyle = useMemo(
-    () => ({
-      backgroundImage:
-        "linear-gradient(100deg,#ff4d8d,#a855f7,#ff4d8d)",
-      backgroundSize: "200% auto",
-    }),
-    []
-  );
-
   return (
     <section className="relative z-20 flex min-h-screen flex-col items-center justify-center px-5 py-20 text-center">
       <motion.p
@@ -89,26 +79,41 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         {REVEAL.eyebrow}
       </motion.p>
 
-      <motion.h2
-        initial={{ opacity: 0, y: 22 }}
+      <motion.p
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.15 }}
-        className="mt-4 font-display text-4xl leading-tight text-soft sm:text-5xl"
+        transition={{ delay: 0.4, duration: 1 }}
+        className="mt-6 max-w-xs font-sans text-[10px] font-medium uppercase leading-relaxed tracking-[0.26em] text-champagne/85 sm:max-w-none sm:text-xs sm:tracking-[0.4em]"
       >
         {REVEAL.headingTop}
-        <motion.span
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="font-display text-5xl font-bold sm:text-6xl"
-          style={nameStyle}
-        >
-          <span className="animate-shimmer bg-clip-text text-transparent">
-            {REVEAL.headingName}
-          </span>
-        </motion.span>
-        {REVEAL.headingTail}
+      </motion.p>
+
+      <motion.h2
+        initial={{ opacity: 0, scale: 0.86, filter: "blur(14px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ delay: 0.6, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-3 font-display text-[3.4rem] font-bold leading-[0.95] tracking-tight sm:text-[5.25rem]"
+      >
+        <span className="text-gradient-shimmer">{REVEAL.headingName}</span>
       </motion.h2>
+
+      {/* gold ornament under the name */}
+      <motion.div
+        initial={{ opacity: 0, scaleX: 0.3 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ delay: 1.3, duration: 1 }}
+        className="mt-5 flex items-center gap-3"
+      >
+        <div className="h-px w-14 bg-gradient-to-r from-transparent to-champagne/70 sm:w-20" />
+        <motion.span
+          animate={{ scale: [1, 1.18, 1] }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+          className="text-lg"
+        >
+          {REVEAL.headingTail}
+        </motion.span>
+        <div className="h-px w-14 bg-gradient-to-l from-transparent to-champagne/70 sm:w-20" />
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0 }}
@@ -144,21 +149,55 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         ) : (
           <motion.div
             key="wish"
-            initial={{ opacity: 0, scale: 0.85, y: 10 }}
+            initial={{ opacity: 0, scale: 0.88, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="mt-10 flex flex-col items-center gap-3"
+            transition={{ type: "spring", stiffness: 190, damping: 22 }}
+            className="relative mt-10 w-full max-w-md"
           >
-            <motion.div
-              initial={{ rotate: -8, scale: 0.5 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-              className="text-4xl"
-            >
-              🎂
-            </motion.div>
-            <p className="max-w-sm font-display text-2xl text-gradient-gold text-shadow-glow sm:text-3xl">
-              {REVEAL.wishMessage}
-            </p>
+            <div className="glass-gold relative overflow-hidden rounded-[26px] px-7 py-7 text-center shadow-[0_30px_70px_-30px_rgba(255,217,160,0.55)]">
+              {/* foil edges */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/80 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-champagne/50 to-transparent" />
+              {/* floating sparkles */}
+              {[
+                { l: "8%", t: "18%", d: 0 },
+                { l: "90%", t: "26%", d: 0.8 },
+                { l: "16%", t: "78%", d: 1.5 },
+                { l: "84%", t: "72%", d: 2.1 },
+              ].map((sp, i) => (
+                <motion.span
+                  key={i}
+                  className="pointer-events-none absolute text-xs"
+                  style={{ left: sp.l, top: sp.t }}
+                  animate={{ opacity: [0.15, 0.95, 0.15], scale: [0.8, 1.2, 0.8] }}
+                  transition={{ duration: 3.4, delay: sp.d, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  ✨
+                </motion.span>
+              ))}
+
+              <motion.div
+                initial={{ rotate: -10, scale: 0.4 }}
+                animate={{ rotate: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 220, delay: 0.15 }}
+                className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-rose/35 to-violet/35 text-xl shadow-[0_0_26px_-6px_rgba(255,77,141,0.9)]"
+              >
+                🎂
+              </motion.div>
+
+              <p className="font-display text-[1.35rem] leading-snug text-soft text-shadow-glow sm:text-2xl">
+                {REVEAL.wishMessage}
+              </p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9 }}
+                className="mt-3 font-hand text-xl text-champagne/90"
+              >
+                your wish has been heard
+              </motion.p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

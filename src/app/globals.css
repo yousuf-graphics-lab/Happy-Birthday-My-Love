@@ -28,6 +28,8 @@
   --animate-aurora: auroraShift 18s ease-in-out infinite;
   --animate-petal-fall: petalFall 9s linear infinite;
   --animate-heart-rise: heartRise 7s ease-in-out infinite;
+  --animate-flame: flameSway 2.4s ease-in-out infinite;
+  --animate-cake-glow: cakeGlow 4.5s ease-in-out infinite;
 
   /* Custom easing */
   --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
@@ -213,10 +215,63 @@ body {
   transform-origin: bottom center;
 }
 
+/* A softer, slower sway for the birthday candles */
+@keyframes flameSway {
+  0%, 100% { transform: rotate(-2deg) scale(1, 1); }
+  30% { transform: rotate(2.4deg) scale(0.96, 1.07); }
+  60% { transform: rotate(-1deg) scale(1.04, 0.96); }
+}
+
+/* Warm light that breathes over the cake */
+@keyframes cakeGlow {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.08); }
+}
+
+/* Smoke wisp after a candle is blown out */
+@keyframes smokeRise {
+  0% { opacity: 0.5; transform: translateY(0) scale(0.55); }
+  55% { opacity: 0.24; }
+  100% { opacity: 0; transform: translateY(-44px) scale(1.6); }
+}
+
+.smoke-wisp {
+  animation: smokeRise 2.6s ease-out forwards;
+}
+
 /* ---------------------------- utilities -------------------------------- */
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Shimmering foil text — the birthday name */
+.text-gradient-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #ff4d8d 0%,
+    #ffb3d1 18%,
+    #ffd9a0 34%,
+    #fff7fb 48%,
+    #ffd9a0 62%,
+    #a855f7 82%,
+    #ff4d8d 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+  filter: drop-shadow(0 6px 30px rgba(255, 77, 141, 0.35));
+}
+
+/* Ruled stationery lines for the letter */
+.paper-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 46px,
+    rgba(255, 217, 160, 0.09) 46px 47px
+  );
+}
 
 .text-shadow-glow {
   text-shadow: 0 0 30px rgba(255, 77, 141, 0.55),
