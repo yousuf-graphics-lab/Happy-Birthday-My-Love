@@ -36,8 +36,8 @@ export const WELCOME = {
 // SCREEN 02 — The Grand Birthday Reveal ------------------------------------
 export const REVEAL = {
   eyebrow: "THE WORLD IS CELEBRATING YOU",
-  headingTop: "HAPPY BIRTHDAY, MY BEAUTIFUL",
-  headingName: "SAMIYA",
+  headingTop: "HAPPY BIRTHDAY, MY BEAUTIFUL SWEETHEART",
+  headingName: "PAKHI",
   headingTail: "💖",
   supporting:
     "Some people make the world brighter just by being in it. And today, the world has another reason to celebrate.",
@@ -208,7 +208,7 @@ export const REASONS = {
 // SCREEN 07 — The Final Birthday Surprise -----------------------------------
 export const FINALE = {
   eyebrow: "ONE LAST THING",
-  heading: "One Last Thing, My Samiya...",
+  heading: "One Last Thing, My Dear Love...",
   lines: [
     "Even if I could create a thousand beautiful websites, I would still choose to dedicate every single one of them to you.",
     "Because you deserve to feel special, not just today, but every day.",

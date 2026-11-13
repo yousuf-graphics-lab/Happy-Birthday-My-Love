@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Mic } from "lucide-react";
 import { useRef, useState } from "react";
 import BirthdayCake from "@/components/cake/BirthdayCake";
+import PartyRoom from "@/components/room/PartyRoom";
 import MagicButton from "@/components/ui/MagicButton";
 import { useAudio } from "@/components/AudioProvider";
 import { useBreathDetector } from "@/hooks/useBreathDetector";
@@ -64,11 +65,14 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
   });
 
   return (
-    <section className="relative z-20 flex min-h-screen flex-col items-center justify-center px-5 py-20 text-center">
+    <section className="relative z-20 flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 py-20 text-center">
+      {/* the decorated room the cake stands in */}
+      <PartyRoom />
+
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="eyebrow"
+        className="eyebrow relative z-10"
       >
         {REVEAL.eyebrow}
       </motion.p>
@@ -77,7 +81,7 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 1 }}
-        className="mt-6 max-w-xs font-sans text-[10px] font-medium uppercase leading-relaxed tracking-[0.26em] text-champagne/85 sm:max-w-none sm:text-xs sm:tracking-[0.4em]"
+        className="relative z-10 mt-6 max-w-[20rem] font-sans text-[10px] font-medium uppercase leading-[2] tracking-[0.2em] text-champagne/85 sm:max-w-2xl sm:text-xs sm:leading-[2.1] sm:tracking-[0.34em]"
       >
         {REVEAL.headingTop}
       </motion.p>
@@ -86,7 +90,7 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         initial={{ opacity: 0, scale: 0.86, filter: "blur(14px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{ delay: 0.6, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-3 font-display text-[3.4rem] font-bold leading-[0.95] tracking-tight sm:text-[5.25rem]"
+        className="relative z-10 mt-3 font-display text-[3.2rem] font-bold leading-[0.95] tracking-tight sm:text-[5rem]"
       >
         <span className="text-gradient-shimmer">{REVEAL.headingName}</span>
       </motion.h2>
