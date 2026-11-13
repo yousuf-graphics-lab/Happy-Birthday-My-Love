@@ -31,10 +31,16 @@ const BOKEH = [
 export default function PartyRoom() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {/* A cozy birthday bedroom, with a warm veil for readable foreground text. */}
-      <div className="absolute inset-0 bg-[#452433] bg-[url('/images/birthday-room.webp')] bg-cover bg-center" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(35,12,25,0.55),rgba(45,15,29,0.45)_45%,rgba(20,8,18,0.7))]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(20,6,19,0.35)_100%)]" />
+      {/* ------------------------------- the wall ------------------------------- */}
+      <div className="absolute inset-0 bg-[radial-gradient(130%_95%_at_50%_32%,#35194d_0%,#241238_36%,#160d27_64%,#0a0614_100%)]" />
+      {/* soft colour wash bleeding down from the ceiling */}
+      <div className="absolute inset-x-0 top-0 h-[42%] bg-[radial-gradient(65%_100%_at_24%_0%,rgba(255,77,141,0.18),transparent_70%)]" />
+      <div className="absolute inset-x-0 top-0 h-[42%] bg-[radial-gradient(60%_100%_at_78%_0%,rgba(168,85,247,0.2),transparent_70%)]" />
+      {/* faint wall panelling */}
+      <div className="absolute inset-0 opacity-[0.14] bg-[repeating-linear-gradient(90deg,rgba(255,217,160,0.22)_0px,rgba(255,217,160,0.22)_1px,transparent_1px,transparent_92px)]" />
+      {/* skirting + floor */}
+      <div className="absolute inset-x-0 bottom-0 h-[30%] bg-[linear-gradient(180deg,transparent_0%,rgba(8,4,16,0.55)_34%,rgba(5,3,10,0.96)_100%)]" />
+      <div className="absolute inset-x-0 bottom-[29%] h-px bg-gradient-to-r from-transparent via-champagne/12 to-transparent" />
 
       {/* --------------------------- strip lights: top --------------------------- */}
       <div className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,#ff4d8d,#a855f7,#67e8f9,#ffd9a0,#ff8ac1,#ff4d8d)] opacity-90" />
