@@ -90,7 +90,7 @@ export default function Screen02Reveal({ onContinue }: { onContinue: () => void 
         initial={{ opacity: 0, scale: 0.86, filter: "blur(14px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{ delay: 0.6, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 mt-3 font-display text-[3.2rem] font-bold leading-[0.95] tracking-tight sm:text-[5rem]"
+        className="relative z-10 mt-3 font-hand text-[4.6rem] font-bold leading-[0.95] tracking-normal drop-shadow-[0_0_18px_rgba(255,77,141,0.8)] sm:text-[7rem]"
       >
         <span className="text-gradient-shimmer">{REVEAL.headingName}</span>
       </motion.h2>
